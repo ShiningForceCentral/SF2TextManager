@@ -17,6 +17,7 @@ public class HuffmanTree {
     private byte[] symbols;
     private byte[] tree;
     
+    public static byte PREVIOUS_SYMBOL;
     public static byte STRING_BYTE;
     public static int STRING_BYTE_COUNTER;    
     public static int STRING_BIT_COUNTER;

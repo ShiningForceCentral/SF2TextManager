@@ -23,7 +23,7 @@ private byte[]                          oneByte;                                
 private Appender                        appender;                                                   // most recent action
 
 public TextAreaOutputStream(JTextArea txtara) {
-    this(txtara,1000);
+    this(txtara,10000);
     }
 
 public TextAreaOutputStream(JTextArea txtara, int maxlin) {
