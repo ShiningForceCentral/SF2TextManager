@@ -8,6 +8,7 @@ package sfc.segahr;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -43,6 +44,7 @@ public class BusinessLayer {
     private static String[] textbankStrings;
     
     private static String[] gamescript;
+    private static String parentPath;
     
     private static Map<Integer,Integer>[] newSymbolCounters;
     private static HuffmanTreeNode[] newHuffmanTreeTopNodes;
@@ -66,6 +68,7 @@ public class BusinessLayer {
         huffmanTreeOffsetsFile = new File(huffmanTreeOffsetsFilepath);
         huffmanTreesFile = new File(huffmanTreesFilepath);
         textbankFile = new File(textbankFilepath);
+        parentPath = huffmanTreeOffsetsFile.getParent();
         System.out.println("sfc.segahr.BusinessLayer.openFiles() - Files opened.");
     }
     
@@ -361,8 +364,8 @@ public class BusinessLayer {
             Date d = new Date();
             DateFormat df = new SimpleDateFormat("YYMMddhhmmss");
             String dateString = df.format(d);
-            Path offsetsFilePath = Paths.get(huffmanTreeOffsetsFile.getParent()+"\\huffmantreeoffsets-"+dateString+".bin");
-            Path treesFilePath = Paths.get(huffmanTreesFile.getParent()+"\\huffmantrees-"+dateString+".bin");
+            Path offsetsFilePath = Paths.get(parentPath+"\\huffmantreeoffsets-"+dateString+".bin");
+            Path treesFilePath = Paths.get(parentPath+"\\huffmantrees-"+dateString+".bin");
             Files.write(offsetsFilePath,newHuffmantreeOffsetsFileBytes);
             Files.write(treesFilePath, newHuffmanTreesFileBytes);
             for(int i=0;i<newTextbanks.length;i++){
@@ -370,7 +373,7 @@ public class BusinessLayer {
                 while(index.length()<2){
                     index = "0"+index;
                 }
-                Path textbankFilePath = Paths.get(huffmanTreeOffsetsFile.getParent()+"\\textbank"+index+"-"+dateString+".bin");
+                Path textbankFilePath = Paths.get(parentPath+"\\textbank"+index+"-"+dateString+".bin");
                 Files.write(textbankFilePath, newTextbanks[i]);
             }
         } catch (IOException ex) {
@@ -515,6 +518,26 @@ public class BusinessLayer {
         System.out.println("sfc.segahr.BusinessLayer.produceTextbanks() - Text banks produced.");
     }
 
-    
+    public static void importCsv(String filepath){
+        try {
+            System.out.println("sfc.segahr.BusinessLayer.importCsv() - Importing CSV ...");
+            Path path = Paths.get(filepath);
+            parentPath = path.getParent().toString();
+            List<String> lines = Files.readAllLines(path, Charset.forName(System.getProperty("file.encoding")));
+            gamescript = new String[lines.size()];
+            int i = 0;
+            for(String line : lines){
+                String lineWithoutIndex = line.substring(line.indexOf(";")+1);
+                gamescript[i] = lineWithoutIndex;
+                i++;
+                System.out.println("Line "+i+" : "+lineWithoutIndex);
+            }
+            System.out.println("sfc.segahr.BusinessLayer.importCsv() - CSV imported.");
+        } catch (IOException ex) {
+            Logger.getLogger(BusinessLayer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+                
+    }
     
 }
