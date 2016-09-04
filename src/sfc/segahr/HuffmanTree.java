@@ -78,7 +78,7 @@ public class HuffmanTree {
         return sb.toString();
     }
     
-    public byte parseNextSymbol(byte[] data, short offset){
+    public byte parseNextSymbol(byte[] data, short offset, StringBuilder bitsString){
         byte symbol = 0;
         int symbolsSkipCounter = 0;
         int nonLeafCounter = 0;
@@ -87,6 +87,7 @@ public class HuffmanTree {
         int treeByteCounter = 0;
         int treeBitCounter = 0;
         byte stringByte = data[offset];
+        bitsString.append("[");
         while(true){
             if(treeBitCounter>7){
                 treeByteCounter++;
@@ -104,7 +105,7 @@ public class HuffmanTree {
                 int stringBit = (stringByte >> (7-STRING_BIT_COUNTER)) & 1;
                 STRING_BIT_COUNTER++;
                 if(stringBit == 0){
-                    
+                    bitsString.append("0");
                 }else{
                     nonLeafCounter = 0;
                     leafCounter = 0;
@@ -123,11 +124,13 @@ public class HuffmanTree {
                         }
                     }
                     symbolsSkipCounter += leafCounter;
+                    bitsString.append("1");
                 }
             }else{
                 break;
             }
         }
+        bitsString.append("] ");
         symbol = symbols[symbols.length-1-symbolsSkipCounter];
         return symbol;
     }
