@@ -81,8 +81,8 @@ public class Constants {
                                             ",",
                                             "!",
                                             "?",
-                                            "“",
-                                            "”",
+                                            "<", /* Replaces character '“' for easier writing */
+                                            ">", /* Replaces character '”' for easier writing */
                                             "'",
                                             "(",
                                             ")",

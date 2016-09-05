@@ -244,6 +244,10 @@ public class BusinessLayer {
                         previousSymbol = symbol;
                         break;                        
                     }
+                    if(k+1==Constants.SYMBOLS.length){
+                        System.err.println("Current character "+string.charAt(stringPointer)+" is not recognized as the beginning of a known symbol, and will be ignored.");
+                        stringPointer++;
+                    }
                 }
             }
             symbols[symbolsPointer] = (byte)0xFE;
@@ -362,13 +366,16 @@ public class BusinessLayer {
     
     public static void writeFiles(){
         try {
+            System.out.println("com.sfc.sf2.text.BusinessLayer.writeFiles() - Writing files ...");
             Date d = new Date();
             DateFormat df = new SimpleDateFormat("YYMMddHHmmss");
             String dateString = df.format(d);
             Path offsetsFilePath = Paths.get(parentPath+"\\huffmantreeoffsets-"+dateString+".bin");
             Path treesFilePath = Paths.get(parentPath+"\\huffmantrees-"+dateString+".bin");
             Files.write(offsetsFilePath,newHuffmantreeOffsetsFileBytes);
+            System.out.println(newHuffmantreeOffsetsFileBytes.length + " bytes into " + offsetsFilePath);
             Files.write(treesFilePath, newHuffmanTreesFileBytes);
+            System.out.println(newHuffmanTreesFileBytes.length + " bytes into " + treesFilePath);
             for(int i=0;i<newTextbanks.length;i++){
                 String index = String.valueOf(i);
                 while(index.length()<2){
@@ -376,12 +383,31 @@ public class BusinessLayer {
                 }
                 Path textbankFilePath = Paths.get(parentPath+"\\textbank"+index+"-"+dateString+".bin");
                 Files.write(textbankFilePath, newTextbanks[i]);
+                System.out.println(newTextbanks[i].length + " bytes into " + textbankFilePath);
             }
+            System.out.println("com.sfc.sf2.text.BusinessLayer.writeFiles() - Files written.");
         } catch (IOException ex) {
             Logger.getLogger(BusinessLayer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
- 
+    
+    public static void importDisassembly(String huffmanTreeOffsetsFilePath, String huffmanTreesFilePath, String firstTextbankFilePath){
+        System.out.println("com.sfc.sf2.text.BusinessLayer.importDisassembly() - Importing disassembly ...");
+        BusinessLayer.openFiles(huffmanTreeOffsetsFilePath,huffmanTreesFilePath,firstTextbankFilePath);
+        BusinessLayer.parseOffsets();
+        BusinessLayer.parseTrees();
+        BusinessLayer.parseAllTextbanks();
+        System.out.println("com.sfc.sf2.text.BusinessLayer.importDisassembly() - Disassembly imported.");
+    }
+    
+    public static void exportDisassembly(){
+        System.out.println("com.sfc.sf2.text.BusinessLayer.importDisassembly() - Exporting disassembly ...");
+        BusinessLayer.produceTrees();
+        BusinessLayer.produceTextbanks();
+        BusinessLayer.writeFiles();
+System.out.println("com.sfc.sf2.text.BusinessLayer.importDisassembly() - Disassembly exported.");        
+    } 
+    
     public static <K, V extends Comparable<? super V>> Map<K, V> 
     sortByValueDesc( Map<K, V> map )
     {
@@ -471,6 +497,10 @@ public class BusinessLayer {
                         previousSymbol = symbol;
                         break;                        
                     }
+                    if(k+1==Constants.SYMBOLS.length){
+                        System.err.println("Current character "+string.charAt(stringPointer)+" is not recognized as the beginning of a known symbol, and will be ignored.");
+                        stringPointer++;
+                    }
                 }
             }
             symbols[symbolsPointer] = (byte)0xFE;
@@ -530,7 +560,7 @@ public class BusinessLayer {
             for(String line : lines){
                 int semiColonIndex = line.indexOf(";");
                 if(semiColonIndex!=-1){
-                    String lineWithoutIndex = line.substring(+1);
+                    String lineWithoutIndex = line.substring(semiColonIndex+1);
                     gamescript[i] = lineWithoutIndex;
                     System.out.println("Line "+i+" : "+lineWithoutIndex);
                 }
@@ -556,7 +586,11 @@ public class BusinessLayer {
                     hexIndex = "0" + hexIndex;
                 }
                 line = hexIndex+";"+line;
-                pw.println(line);
+                if(i+1!=gamescript.length){
+                    pw.println(line);
+                }else{
+                    pw.print(line);
+                }
                 i++;
                 System.out.println("Line "+i+" : "+line);
             }
