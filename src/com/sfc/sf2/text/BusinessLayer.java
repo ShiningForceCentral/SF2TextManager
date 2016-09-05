@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sfc.segahr;
+package com.sfc.sf2.text;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -362,7 +363,7 @@ public class BusinessLayer {
     public static void writeFiles(){
         try {
             Date d = new Date();
-            DateFormat df = new SimpleDateFormat("YYMMddhhmmss");
+            DateFormat df = new SimpleDateFormat("YYMMddHHmmss");
             String dateString = df.format(d);
             Path offsetsFilePath = Paths.get(parentPath+"\\huffmantreeoffsets-"+dateString+".bin");
             Path treesFilePath = Paths.get(parentPath+"\\huffmantrees-"+dateString+".bin");
@@ -527,10 +528,13 @@ public class BusinessLayer {
             gamescript = new String[lines.size()];
             int i = 0;
             for(String line : lines){
-                String lineWithoutIndex = line.substring(line.indexOf(";")+1);
-                gamescript[i] = lineWithoutIndex;
+                int semiColonIndex = line.indexOf(";");
+                if(semiColonIndex!=-1){
+                    String lineWithoutIndex = line.substring(+1);
+                    gamescript[i] = lineWithoutIndex;
+                    System.out.println("Line "+i+" : "+lineWithoutIndex);
+                }
                 i++;
-                System.out.println("Line "+i+" : "+lineWithoutIndex);
             }
             System.out.println("sfc.segahr.BusinessLayer.importCsv() - CSV imported.");
         } catch (IOException ex) {
@@ -539,5 +543,30 @@ public class BusinessLayer {
         
                 
     }
+    
+    public static void exportCsv(String filepath){
+        try {
+            System.out.println("sfc.segahr.BusinessLayer.importCsv() - Exporting CSV ...");
+            Path path = Paths.get(filepath);
+            PrintWriter pw = new PrintWriter(path.toString(),System.getProperty("file.encoding"));
+            int i = 0;
+            for(String line : gamescript){
+                String hexIndex = Integer.toHexString(i).toUpperCase();
+                while(hexIndex.length()<4){
+                    hexIndex = "0" + hexIndex;
+                }
+                line = hexIndex+";"+line;
+                pw.println(line);
+                i++;
+                System.out.println("Line "+i+" : "+line);
+            }
+            pw.close();
+            System.out.println("sfc.segahr.BusinessLayer.importCsv() - CSV exported.");
+        } catch (IOException ex) {
+            Logger.getLogger(BusinessLayer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+                
+    }    
     
 }

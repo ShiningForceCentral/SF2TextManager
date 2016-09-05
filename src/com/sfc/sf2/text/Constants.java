@@ -3,17 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sfc.segahr;
+package com.sfc.sf2.text;
 
 /**
  *
  * @author wiz
  */
 public class Constants {
-    /*
-        Missing chars : 
-         _-.,!?"\\UNUSED"'()#%&+/:
-    */
+
     public static final String[] SYMBOLS = {"\\UNUSED",
                                             " ",
                                             "0",

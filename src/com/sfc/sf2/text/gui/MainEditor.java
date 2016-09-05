@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sfc.segahr;
+package com.sfc.sf2.text.gui;
 
+import com.sfc.sf2.text.BusinessLayer;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -61,6 +62,7 @@ public class MainEditor extends javax.swing.JFrame {
         jButton11 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton12 = new javax.swing.JButton();
+        jButton13 = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
@@ -281,6 +283,13 @@ public class MainEditor extends javax.swing.JFrame {
             }
         });
 
+        jButton13.setText("Export CSV");
+        jButton13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton13ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -294,6 +303,8 @@ public class MainEditor extends javax.swing.JFrame {
                 .addComponent(jButton7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton13)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton12)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -314,7 +325,8 @@ public class MainEditor extends javax.swing.JFrame {
                 .addComponent(jButton9)
                 .addComponent(jButton11)
                 .addComponent(jButton2)
-                .addComponent(jButton12))
+                .addComponent(jButton12)
+                .addComponent(jButton13))
         );
 
         jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder("Console"));
@@ -517,6 +529,10 @@ public class MainEditor extends javax.swing.JFrame {
         BusinessLayer.importCsv(jTextField7.getText());
     }//GEN-LAST:event_jButton12ActionPerformed
 
+    private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
+        BusinessLayer.exportCsv(jTextField7.getText());
+    }//GEN-LAST:event_jButton13ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -573,6 +589,7 @@ public class MainEditor extends javax.swing.JFrame {
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
+    private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;

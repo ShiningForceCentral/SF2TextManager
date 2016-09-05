@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sfc.segahr;
+package com.sfc.sf2.text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
