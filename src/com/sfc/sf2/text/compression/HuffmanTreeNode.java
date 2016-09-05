@@ -3,10 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.sfc.sf2.text;
+package com.sfc.sf2.text.compression;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -22,47 +21,6 @@ public class HuffmanTreeNode {
     public HuffmanTreeNode leftChild;
     public HuffmanTreeNode rightChild;
     public int weight;
-    
-    public static HuffmanTreeNode makeTree(List<HuffmanTreeNode> nodes){
-        if(nodes.size()==0){
-            return null;
-        } else if(nodes.size()==1){
-            return nodes.get(0);
-        } else{
-            HuffmanTreeNode parent = new HuffmanTreeNode();
-            parent.isLeaf = false;
-            parent.leftChild = nodes.get(0);
-            parent.rightChild = nodes.get(1);
-            parent.weight = parent.leftChild.weight + parent.rightChild.weight;
-            nodes.remove(0);
-            nodes.remove(0);
-            int insertIndex = 0;
-            for(int i=0;i<nodes.size();i++){
-                if(nodes.get(i).weight<parent.weight
-                        && i == nodes.size()-1){
-                    insertIndex = nodes.size();
-                    break;
-                } else if(nodes.get(i).weight>parent.weight){
-                    insertIndex = i;
-                    break;
-                }
-            }
-            nodes.add(insertIndex, parent);
-            return makeTree(nodes);
-        }
-    }
-    
-    public static void attributeCodes(HuffmanTreeNode node,StringBuilder bitString){
-        if(bitString == null){
-            bitString = new StringBuilder();
-        }
-        if(node.isLeaf){
-            node.codeBitString = bitString.toString();
-        }else{
-            attributeCodes(node.leftChild,new StringBuilder(bitString).append("0"));
-            attributeCodes(node.rightChild,new StringBuilder(bitString).append("1"));
-        }
-    }
     
     public String getCodeBitString(byte symbol){
         if(isLeaf && ((this.symbol&0xFF) == (symbol&0xFF))){
@@ -97,7 +55,7 @@ public class HuffmanTreeNode {
     
     private List<Integer> getTreeSymbolSequence(List<Integer> symbolSequence){
         if(symbolSequence == null){
-            symbolSequence = new ArrayList<Integer>();
+            symbolSequence = new ArrayList<>();
         }
         if(isLeaf){
             symbolSequence.add(0, symbol);
@@ -124,7 +82,7 @@ public class HuffmanTreeNode {
     }
     
     public static byte[] makeTreeBytes(String treeBitString){
-        byte[] treeBytes = null;
+        byte[] treeBytes;
         StringBuilder sb = new StringBuilder(treeBitString);
         while(sb.length()%8!=0){
             sb.append("0");
@@ -137,6 +95,7 @@ public class HuffmanTreeNode {
         return treeBytes;
     }
     
+    @Override
     public String toString(){
         if(isLeaf){
             return "("+symbol+":"+"'"+symbolString+"'="+weight+"->'" + codeBitString + "')";

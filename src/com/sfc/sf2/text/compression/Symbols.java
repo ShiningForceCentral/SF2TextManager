@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.sfc.sf2.text;
+package com.sfc.sf2.text.compression;
 
 /**
  *
  * @author wiz
  */
-public class Constants {
+public class Symbols {
 
-    public static final String[] SYMBOLS = {"\\UNUSED",
+    public static final String[] TABLE = {"\\UNUSED",
                                             " ",
                                             "0",
                                             "1",
@@ -81,8 +81,8 @@ public class Constants {
                                             ",",
                                             "!",
                                             "?",
-                                            "<", /* Replaces character '“' for easier writing */
-                                            ">", /* Replaces character '”' for easier writing */
+                                            "<", /* Represents character '“' (ALT 0147) for easier writing in game script */
+                                            ">", /* Represents character '”' (ALT 0148) for easier writing in game script*/
                                             "'",
                                             "(",
                                             ")",

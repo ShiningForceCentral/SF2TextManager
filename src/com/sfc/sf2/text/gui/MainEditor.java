@@ -5,7 +5,7 @@
  */
 package com.sfc.sf2.text.gui;
 
-import com.sfc.sf2.text.BusinessLayer;
+import com.sfc.sf2.text.TextManager;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -661,11 +661,11 @@ public class MainEditor extends javax.swing.JFrame {
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        BusinessLayer.exportDisassembly();
+        TextManager.exportDisassembly(jTextField12.getText(),jTextField13.getText(),jTextField14.getText());
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
-        BusinessLayer.importCsv(jTextField11.getText());
+        TextManager.importCsv(jTextField11.getText());
     }//GEN-LAST:event_jButton12ActionPerformed
 
     private void jTextField8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField8ActionPerformed
@@ -721,7 +721,7 @@ public class MainEditor extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton17ActionPerformed
 
     private void jButton18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton18ActionPerformed
-        BusinessLayer.importDisassembly(jTextField8.getText(),jTextField9.getText(),jTextField10.getText());
+        TextManager.importDisassembly(jTextField8.getText(),jTextField9.getText(),jTextField10.getText());
     }//GEN-LAST:event_jButton18ActionPerformed
 
     private void jTextField12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField12ActionPerformed
@@ -773,7 +773,7 @@ public class MainEditor extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton27ActionPerformed
 
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
-        BusinessLayer.exportCsv(jTextField15.getText());
+        TextManager.exportCsv(jTextField15.getText());
     }//GEN-LAST:event_jButton13ActionPerformed
 
     /**
