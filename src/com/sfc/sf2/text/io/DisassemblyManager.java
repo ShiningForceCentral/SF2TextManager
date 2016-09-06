@@ -31,61 +31,61 @@ public class DisassemblyManager {
     private static File textbankFile;   
     
     public static String[] importDisassembly(String huffmanTreeOffsetsFilePath, String huffmanTreesFilePath, String firstTextbankFilePath){
-        System.out.println("com.sfc.sf2.text.io.DisassemblyManager.importDisassembl() - Importing disassembly ...");
+        System.out.println("com.sfc.sf2.text.io.DisassemblyManager.importDisassembly() - Importing disassembly ...");
         DisassemblyManager.openFiles(huffmanTreeOffsetsFilePath,huffmanTreesFilePath,firstTextbankFilePath);
         DisassemblyManager.parseOffsets();
         DisassemblyManager.parseTrees();
         String[] gamescript = DisassemblyManager.parseAllTextbanks();        
-        System.out.println("com.sfc.sf2.text.io.DisassemblyManager.importDisassembl() - Disassembly imported.");
+        System.out.println("com.sfc.sf2.text.io.DisassemblyManager.importDisassembly() - Disassembly imported.");
         return gamescript;
     }
     
     public static void exportDisassembly(String[] gamescript, String huffmanTreeOffsetsFilePath, String huffmanTreesFilePath, String firstTextbankFilePath){
-        System.out.println("com.sfc.sf2.text.BusinessLayer.importDisassembly() - Exporting disassembly ...");
+        System.out.println("com.sfc.sf2.text.io.DisassemblyManager.exportDisassembly() - Exporting disassembly ...");
         DisassemblyManager.produceTrees(gamescript);
         DisassemblyManager.produceTextbanks(gamescript);
         DisassemblyManager.writeFiles(huffmanTreeOffsetsFilePath,huffmanTreesFilePath,firstTextbankFilePath);
-        System.out.println("com.sfc.sf2.text.BusinessLayer.importDisassembly() - Disassembly exported.");        
+        System.out.println("com.sfc.sf2.text.io.DisassemblyManager.exportDisassembly() - Disassembly exported.");        
     }    
     
     private static String openFiles(String huffmanTreeOffsetsFilepath, String huffmanTreesFilepath, String textbankFilepath){
-        System.out.println("sfc.segahr.BusinessLayer.openFiles() - Filepaths :"
+        System.out.println("com.sfc.sf2.text.io.DisassemblyManager.openFiles() - Filepaths :"
                 + "\nHuffman tree offsets : " + huffmanTreeOffsetsFilepath
                 + "\nHuffman trees : " + huffmanTreesFilepath
                 + "\nTextbank : " + textbankFilepath);
         huffmanTreeOffsetsFile = new File(huffmanTreeOffsetsFilepath);
         huffmanTreesFile = new File(huffmanTreesFilepath);
         textbankFile = new File(textbankFilepath);
-        System.out.println("sfc.segahr.BusinessLayer.openFiles() - Files opened.");
+        System.out.println("com.sfc.sf2.text.io.DisassemblyManager.openFiles() - Files opened.");
         return textbankFile.getParent();
     }
     
     private static void parseOffsets(){
         try{
-            System.out.println("sfc.segahr.BusinessLayer.parseOffsets() - Parsing offsets ...");
+            System.out.println("com.sfc.sf2.text.io.DisassemblyManager.parseOffsets() - Parsing offsets ...");
             Path path = Paths.get(huffmanTreeOffsetsFile.getAbsolutePath());
             byte[] data = Files.readAllBytes(path);
             TextDecoder.parseOffsets(data);
-            System.out.println("sfc.segahr.BusinessLayer.parseOffsets() - Offsets parsed.");
+            System.out.println("com.sfc.sf2.text.io.DisassemblyManager.parseOffsets() - Offsets parsed.");
         } catch(IOException e){
-            System.err.println("sfc.segahr.BusinessLayer.parseOffsets() - Error while parsing huffmanTreeOffsetsFile data : "+e);
+            System.err.println("com.sfc.sf2.text.io.DisassemblyManager.parseOffsets() - Error while parsing huffmanTreeOffsetsFile data : "+e);
         }
     }
     
     private static void parseTrees(){
         try{
-            System.out.println("sfc.segahr.BusinessLayer.parseTrees() - Parsing trees ...");
+            System.out.println("com.sfc.sf2.text.io.DisassemblyManager.parseTrees() - Parsing trees ...");
             Path path = Paths.get(huffmanTreesFile.getAbsolutePath());
             byte[] data = Files.readAllBytes(path);
             TextDecoder.parseTrees(data);
-            System.out.println("sfc.segahr.BusinessLayer.parseTrees() - Trees parsed.");            
+            System.out.println("com.sfc.sf2.text.io.DisassemblyManager.parseTrees() - Trees parsed.");            
         } catch(IOException e){
-            System.err.println("sfc.segahr.BusinessLayer.parseTrees() - Error while parsing huffmanTreesFile data : "+e);
+            System.err.println("com.sfc.sf2.text.io.DisassemblyManager.parseTrees() - Error while parsing huffmanTreesFile data : "+e);
         }
     }
     
     private static String[] parseAllTextbanks(){
-        System.out.println("sfc.segahr.BusinessLayer.parseTextbank() - Parsing textbank ...");
+        System.out.println("com.sfc.sf2.text.io.DisassemblyManager.parseTextbank() - Parsing textbank ...");
         String[] gamescript = new String[0];        
         try{
             for(int i=0;i<100;i++){
@@ -103,19 +103,19 @@ public class DisassemblyManager {
         }catch(IOException e){
             System.out.println("No more textbank files to parse.");
         }catch(Exception e){
-             System.err.println("sfc.segahr.BusinessLayer.parseTextbank() - Error while parsing textbankFile data : "+e);
+             System.err.println("com.sfc.sf2.text.io.DisassemblyManager.parseTextbank() - Error while parsing textbankFile data : "+e);
         } 
-        System.out.println("sfc.segahr.BusinessLayer.parseTextbank() - Textbanks all parsed.");
+        System.out.println("com.sfc.sf2.text.io.DisassemblyManager.parseTextbank() - Textbanks all parsed.");
         return gamescript;
     }
     
-    public static void produceTrees(String[] gamescript) {
+    private static void produceTrees(String[] gamescript) {
         System.out.println("com.sfc.sf2.text.io.DisassemblyManager.produceTrees() - Producing trees ...");
         TextEncoder.produceTrees(gamescript);
         System.out.println("com.sfc.sf2.text.io.DisassemblyManager.produceTrees() - Trees produced.");
     }
 
-    public static void produceTextbanks(String[] gamescript) {
+    private static void produceTextbanks(String[] gamescript) {
         System.out.println("com.sfc.sf2.text.io.DisassemblyManager.produceTextbanks() - Producing text banks ...");
         TextEncoder.produceTextbanks(gamescript);
         System.out.println("com.sfc.sf2.text.io.DisassemblyManager.produceTextbanks() - Text banks produced.");
@@ -123,7 +123,7 @@ public class DisassemblyManager {
   
     private static void writeFiles(String huffmanTreeOffsetsFilePath, String huffmanTreesFilePath, String firstTextbankFilePath){
         try {
-            System.out.println("com.sfc.sf2.text.BusinessLayer.writeFiles() - Writing files ...");
+            System.out.println("com.sfc.sf2.text.io.DisassemblyManager.writeFiles() - Writing files ...");
             Date d = new Date();
             DateFormat df = new SimpleDateFormat("YYMMddHHmmss");
             String dateString = df.format(d);
@@ -146,7 +146,7 @@ public class DisassemblyManager {
                 Files.write(textbankFilePath, newTextbanks[i]);
                 System.out.println(newTextbanks[i].length + " bytes into " + textbankFilePath);
             }
-            System.out.println("com.sfc.sf2.text.BusinessLayer.writeFiles() - Files written.");
+            System.out.println("com.sfc.sf2.text.io.DisassemblyManager.writeFiles() - Files written.");
         } catch (IOException ex) {
             Logger.getLogger(TextManager.class.getName()).log(Level.SEVERE, null, ex);
         }

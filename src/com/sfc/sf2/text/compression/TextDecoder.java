@@ -127,6 +127,9 @@ public class TextDecoder {
                     STRING_BYTE_COUNTER++;
                     STRING_BIT_COUNTER = 0;
                 }
+                if(offset+STRING_BYTE_COUNTER==4099){
+                    System.out.println("blarghdebug");
+                }
                 stringByte = data[offset+STRING_BYTE_COUNTER];
                 int stringBit = (stringByte >> (7-STRING_BIT_COUNTER)) & 1;
                 STRING_BIT_COUNTER++;

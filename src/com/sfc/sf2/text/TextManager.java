@@ -5,33 +5,9 @@
  */
 package com.sfc.sf2.text;
 
-import com.sfc.sf2.text.compression.Symbols;
-import com.sfc.sf2.text.compression.HuffmanTreeNode;
-import com.sfc.sf2.text.compression.TextEncoder;
 import com.sfc.sf2.text.io.CsvManager;
 import com.sfc.sf2.text.io.DisassemblyManager;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import com.sfc.sf2.text.io.RomManager;
 
 /**
  *
@@ -52,7 +28,31 @@ public class TextManager {
         System.out.println("com.sfc.sf2.text.BusinessLayer.importDisassembly() - Exporting disassembly ...");
         DisassemblyManager.exportDisassembly(gamescript, huffmanTreeOffsetsFilePath,huffmanTreesFilePath,firstTextbankFilePath);
         System.out.println("com.sfc.sf2.text.BusinessLayer.importDisassembly() - Disassembly exported.");        
-    }     
+    }   
+    
+    public static void importOriginalRom(String originalRomFilePath){
+        System.out.println("com.sfc.sf2.text.BusinessLayer.importOriginalRom() - Importing original ROM ...");
+        TextManager.gamescript = RomManager.importRom(RomManager.ORIGINAL_ROM_TYPE,originalRomFilePath);
+        System.out.println("com.sfc.sf2.text.BusinessLayer.importOriginalRom() - Original ROM imported.");
+    }
+    
+    public static void exportOriginalRom(String originalRomFilePath){
+        System.out.println("com.sfc.sf2.text.BusinessLayer.exportOriginalRom() - Exporting original ROM ...");
+        RomManager.exportRom(RomManager.ORIGINAL_ROM_TYPE, TextManager.gamescript, originalRomFilePath);
+        System.out.println("com.sfc.sf2.text.BusinessLayer.exportOriginalRom() - Original ROM exported.");        
+    }   
+    
+    public static void importCaravanRom(String caravanRomFilePath){
+        System.out.println("com.sfc.sf2.text.BusinessLayer.importCaravanRom() - Importing Caravan ROM ...");
+        TextManager.gamescript = RomManager.importRom(RomManager.CARAVAN_ROM_TYPE,caravanRomFilePath);
+        System.out.println("com.sfc.sf2.text.BusinessLayer.importCaravanRom() - Original ROM imported.");
+    }
+    
+    public static void exportCaravanRom(String caravanRomFilePath){
+        System.out.println("com.sfc.sf2.text.BusinessLayer.exportCaravanRom() - Exporting original ROM ...");
+        RomManager.exportRom(RomManager.CARAVAN_ROM_TYPE, TextManager.gamescript, caravanRomFilePath);
+        System.out.println("com.sfc.sf2.text.BusinessLayer.exportCaravanRom() - Caravan ROM exported.");        
+    }    
     
     public static void importCsv(String filepath){
         System.out.println("com.sfc.sf2.text.BusinessLayer.importCsv() - Importing CSV ...");
