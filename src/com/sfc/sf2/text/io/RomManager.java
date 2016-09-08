@@ -129,6 +129,7 @@ public class RomManager {
             Date d = new Date();
             DateFormat df = new SimpleDateFormat("YYMMddHHmmss");
             String dateString = df.format(d);
+            boolean override = false;
             romFile = new File(romFilePath);
             Path romPath = Paths.get(romFile.getAbsolutePath());
             romData = Files.readAllBytes(romPath);
@@ -138,6 +139,7 @@ public class RomManager {
                     + " bytes written at offset 0x" + Integer.toHexString(HUFFMANTREEOFFSETS_OFFSETS[romType][0]).toUpperCase()); 
             int originalHuffmantreeOffsetsSize = HUFFMANTREEOFFSETS_OFFSETS[romType][1]-HUFFMANTREEOFFSETS_OFFSETS[romType][0];
             if(newHuffmantreeOffsetsFileBytes.length>originalHuffmantreeOffsetsSize){
+                override = true;
                 System.err.println("ERROR : NEW HUFFMAN TREE OFFSETS SIZE "+newHuffmantreeOffsetsFileBytes.length
                         +" IS HIGHER THAN ORIGINAL SIZE "+originalHuffmantreeOffsetsSize+" ! THIS WILL OVERRIDE NEXT DATA CHUNK.");
             }
@@ -147,8 +149,10 @@ public class RomManager {
                     + " bytes written at offset 0x" + Integer.toHexString(HUFFMANTREES_OFFSETS[romType][0]).toUpperCase());           
             int originalHuffmantreesSize = HUFFMANTREES_OFFSETS[romType][1]-HUFFMANTREES_OFFSETS[romType][0];
             if(romType==ORIGINAL_ROM_TYPE && newHuffmanTreesFileBytes.length>originalHuffmantreesSize){
+                override = true;
                 System.err.println("ERROR : NEW HUFFMAN TREES SIZE "+newHuffmanTreesFileBytes.length
-                        +" IS HIGHER THAN ORIGINAL SIZE "+originalHuffmantreesSize+" ! THIS WILL OVERRIDE NEXT DATA CHUNK.");
+                        +" IS HIGHER THAN ORIGINAL SIZE "+originalHuffmantreesSize+" ! THIS WILL OVERRIDE TEXTBANK 00."
+                        + "\nTo avoid this, use a caravan-expanded rom, or use a disassembly.");
             }            
             byte[][] newTextbanks = TextEncoder.getNewTextbanks();
             for(int i=0;i<newTextbanks.length;i++){
@@ -157,16 +161,29 @@ public class RomManager {
                     index = "0"+index;
                 }
                 System.arraycopy(newTextbanks[i], 0, romData, TEXTBANKS_OFFSETS[romType][i], newTextbanks[i].length);
+                int sizeComparison = (TEXTBANKS_OFFSETS[romType][i+1]-TEXTBANKS_OFFSETS[romType][i]) - newTextbanks[i].length;
+                StringBuilder sb = new StringBuilder();
+                if(sizeComparison > 0){
+                    sb.append("Saved ").append(sizeComparison).append(" bytes compared to original size (").append(TEXTBANKS_OFFSETS[romType][i+1]-TEXTBANKS_OFFSETS[romType][i]).append(" bytes)");
+                }else{
+                    sb.append("Added ").append(sizeComparison).append(" bytes compared to original size (").append(TEXTBANKS_OFFSETS[romType][i+1]-TEXTBANKS_OFFSETS[romType][i]).append(" bytes)");
+                }
                 System.out.println("Textbank "+index+" : "+newTextbanks[i].length 
-                        + " bytes written at offset 0x" + Integer.toHexString(TEXTBANKS_OFFSETS[romType][i]).toUpperCase());
+                        + " bytes written at offset 0x" + Integer.toHexString(TEXTBANKS_OFFSETS[romType][i]).toUpperCase()
+                        + " <- " + sb.toString());
                 int originalTextbankSize = TEXTBANKS_OFFSETS[romType][i+1]-TEXTBANKS_OFFSETS[romType][i];
                 if(newTextbanks[i].length>originalTextbankSize){
+                    override = true;
                     System.err.println("ERROR : NEW TEXTBANK SIZE "+newTextbanks[i].length
-                            +" IS HIGHER THAN ORIGINAL SIZE "+originalTextbankSize+" ! THIS WILL OVERRIDE NEXT DATA CHUNK.");
+                            +" IS HIGHER THAN ORIGINAL SIZE "+originalTextbankSize+" ! THIS WILL OVERRIDE NEXT DATA ITEM."
+                            + "\nTo avoid this, use a disassembly.");
                 }                 
             }
             Files.write(romPath,romData);
-            System.out.println(romData.length + " bytes into " + romFilePath);            
+            System.out.println(romData.length + " bytes into " + romFilePath);  
+            if(override){
+                System.err.println("ERROR : DATA OVERRIDING HAPPENED. MORE DETAILS IN PREVIOUS LOGS.");
+            }
             System.out.println("com.sfc.sf2.text.io.RomManager.writeFiles() - File written.");
         } catch (IOException ex) {
             Logger.getLogger(TextManager.class.getName()).log(Level.SEVERE, null, ex);

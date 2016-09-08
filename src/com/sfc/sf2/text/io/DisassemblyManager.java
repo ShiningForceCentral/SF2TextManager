@@ -93,7 +93,7 @@ public class DisassemblyManager {
                 while(index.length()<2){
                     index = "0"+index;
                 }
-                Path path = Paths.get(textbankFile.getParent()+"\\textbank"+index+".bin");
+                Path path = Paths.get(textbankFile.getParent() + File.separator + textbankFile.getName().replace("00", index));
                 byte[] data = Files.readAllBytes(path); 
                 String[] textbankStrings = TextDecoder.parseTextbank(data, i);
                 String[] workingStringArray = Arrays.copyOf(gamescript, gamescript.length + textbankStrings.length);
@@ -129,7 +129,7 @@ public class DisassemblyManager {
             String dateString = df.format(d);
             Path offsetsFilePath = Paths.get(huffmanTreeOffsetsFilePath);
             Path treesFilePath = Paths.get(huffmanTreesFilePath);
-            Path parentPath = Paths.get(firstTextbankFilePath).getParent();
+            Path testbankFilePath = Paths.get(firstTextbankFilePath);
             byte[] newHuffmantreeOffsetsFileBytes = TextEncoder.getNewHuffmantreeOffsetsFileBytes();
             byte[] newHuffmanTreesFileBytes = TextEncoder.getNewHuffmanTreesFileBytes();
             byte[][] newTextbanks = TextEncoder.getNewTextbanks();
@@ -142,7 +142,7 @@ public class DisassemblyManager {
                 while(index.length()<2){
                     index = "0"+index;
                 }
-                Path textbankFilePath = Paths.get(parentPath+"\\textbank"+index+"-"+dateString+".bin");
+                Path textbankFilePath = Paths.get(testbankFilePath.getParent() + File.separator + testbankFilePath.getFileName().toString().replace("00", index));
                 Files.write(textbankFilePath, newTextbanks[i]);
                 System.out.println(newTextbanks[i].length + " bytes into " + textbankFilePath);
             }

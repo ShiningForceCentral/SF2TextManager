@@ -23,6 +23,9 @@ public class MainEditor extends javax.swing.JFrame {
     public MainEditor() {
         initComponents();
         initConsole(jTextArea1);
+        File workingDirectory = new File(MainEditor.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+        System.setProperty("user.dir", workingDirectory.getParent());
+        jFileChooser1.setCurrentDirectory(workingDirectory);
     }
 
     /**
@@ -94,20 +97,6 @@ public class MainEditor extends javax.swing.JFrame {
         jTextField15 = new javax.swing.JTextField();
         jButton27 = new javax.swing.JButton();
         jButton13 = new javax.swing.JButton();
-        menuBar = new javax.swing.JMenuBar();
-        fileMenu = new javax.swing.JMenu();
-        openMenuItem = new javax.swing.JMenuItem();
-        saveMenuItem = new javax.swing.JMenuItem();
-        saveAsMenuItem = new javax.swing.JMenuItem();
-        exitMenuItem = new javax.swing.JMenuItem();
-        editMenu = new javax.swing.JMenu();
-        cutMenuItem = new javax.swing.JMenuItem();
-        copyMenuItem = new javax.swing.JMenuItem();
-        pasteMenuItem = new javax.swing.JMenuItem();
-        deleteMenuItem = new javax.swing.JMenuItem();
-        helpMenu = new javax.swing.JMenu();
-        contentsMenuItem = new javax.swing.JMenuItem();
-        aboutMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -131,7 +120,7 @@ public class MainEditor extends javax.swing.JFrame {
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -139,7 +128,7 @@ public class MainEditor extends javax.swing.JFrame {
 
         jLabel8.setText("Huffman tree offsets :");
 
-        jTextField8.setText("D:\\SEGADEV\\GITHUB\\SF2DISASM\\disasm\\scripting\\textbanks\\huffmantreeoffsets.bin");
+        jTextField8.setText(".\\huffmantreeoffsets.bin");
         jTextField8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField8ActionPerformed(evt);
@@ -155,7 +144,7 @@ public class MainEditor extends javax.swing.JFrame {
 
         jLabel9.setText("Huffman trees :");
 
-        jTextField9.setText("D:\\SEGADEV\\GITHUB\\SF2DISASM\\disasm\\scripting\\textbanks\\huffmantrees.bin");
+        jTextField9.setText(".\\huffmantrees.bin");
         jTextField9.setToolTipText("");
         jTextField9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -172,7 +161,7 @@ public class MainEditor extends javax.swing.JFrame {
 
         jLabel10.setText("First Textbank :");
 
-        jTextField10.setText("D:\\SEGADEV\\GITHUB\\SF2DISASM\\disasm\\scripting\\textbanks\\textbank00.bin");
+        jTextField10.setText(".\\textbank00.bin");
         jTextField10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField10ActionPerformed(evt);
@@ -198,7 +187,7 @@ public class MainEditor extends javax.swing.JFrame {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(478, Short.MAX_VALUE)
+                .addContainerGap(499, Short.MAX_VALUE)
                 .addComponent(jButton18)
                 .addContainerGap())
             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -216,7 +205,7 @@ public class MainEditor extends javax.swing.JFrame {
                             .addComponent(jButton16))
                         .addGroup(jPanel4Layout.createSequentialGroup()
                             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jTextField8, javax.swing.GroupLayout.DEFAULT_SIZE, 366, Short.MAX_VALUE)
+                                .addComponent(jTextField8, javax.swing.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE)
                                 .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -254,7 +243,7 @@ public class MainEditor extends javax.swing.JFrame {
 
         jLabel16.setText("Original ROM :");
 
-        jTextField16.setText("D:\\SEGADEV\\GITHUB\\SF2DISASM\\build\\sf2.bin");
+        jTextField16.setText(".\\sf2.bin");
         jTextField16.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField16ActionPerformed(evt);
@@ -280,13 +269,15 @@ public class MainEditor extends javax.swing.JFrame {
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(jLabel16)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton23)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jTextField16, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton23))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel16)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jTextField16, javax.swing.GroupLayout.PREFERRED_SIZE, 414, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton22)))
                 .addContainerGap())
@@ -308,7 +299,7 @@ public class MainEditor extends javax.swing.JFrame {
 
         jLabel17.setText("Caravan ROM :");
 
-        jTextField17.setText("D:\\SEGADEV\\CARAVAN\\0.6\\sf2.bin");
+        jTextField17.setText(".\\sf2.bin");
         jTextField17.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField17ActionPerformed(evt);
@@ -334,13 +325,13 @@ public class MainEditor extends javax.swing.JFrame {
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
+                .addContainerGap()
                 .addComponent(jLabel17)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jButton25)
                     .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addComponent(jTextField17, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
+                        .addComponent(jTextField17, javax.swing.GroupLayout.DEFAULT_SIZE, 409, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton24)))
                 .addContainerGap())
@@ -362,7 +353,7 @@ public class MainEditor extends javax.swing.JFrame {
 
         jLabel11.setText("CSV game script :");
 
-        jTextField11.setText("D:\\SEGADEV\\GITHUB\\SF2DISASM\\disasm\\scripting\\textbanks\\gamescript.csv");
+        jTextField11.setText(".\\gamescript.csv");
         jTextField11.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField11ActionPerformed(evt);
@@ -388,13 +379,13 @@ public class MainEditor extends javax.swing.JFrame {
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
+                .addContainerGap()
                 .addComponent(jLabel11)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jButton12)
                     .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addComponent(jTextField11, javax.swing.GroupLayout.DEFAULT_SIZE, 364, Short.MAX_VALUE)
+                        .addComponent(jTextField11, javax.swing.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton17)))
                 .addContainerGap())
@@ -432,7 +423,7 @@ public class MainEditor extends javax.swing.JFrame {
 
         jLabel12.setText("Huffman tree offsets :");
 
-        jTextField12.setText("D:\\SEGADEV\\GITHUB\\SF2DISASM\\disasm\\scripting\\textbanks\\huffmantreeoffsets.bin");
+        jTextField12.setText(".\\newhuffmantreeoffsets.bin");
         jTextField12.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField12ActionPerformed(evt);
@@ -448,7 +439,7 @@ public class MainEditor extends javax.swing.JFrame {
 
         jLabel13.setText("Huffman trees :");
 
-        jTextField13.setText("D:\\SEGADEV\\GITHUB\\SF2DISASM\\disasm\\scripting\\textbanks\\huffmantrees.bin");
+        jTextField13.setText(".\\newhuffmantrees.bin");
         jTextField13.setToolTipText("");
         jTextField13.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -465,7 +456,7 @@ public class MainEditor extends javax.swing.JFrame {
 
         jLabel14.setText("First Textbank :");
 
-        jTextField14.setText("D:\\SEGADEV\\GITHUB\\SF2DISASM\\disasm\\scripting\\textbanks\\textbank00.bin");
+        jTextField14.setText(".\\textbank00.bin");
         jTextField14.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField14ActionPerformed(evt);
@@ -504,7 +495,7 @@ public class MainEditor extends javax.swing.JFrame {
                         .addComponent(jButton21))
                     .addGroup(jPanel11Layout.createSequentialGroup()
                         .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextField12, javax.swing.GroupLayout.DEFAULT_SIZE, 366, Short.MAX_VALUE)
+                            .addComponent(jTextField12, javax.swing.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE)
                             .addComponent(jTextField13, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -543,7 +534,7 @@ public class MainEditor extends javax.swing.JFrame {
 
         jLabel18.setText("Original ROM :");
 
-        jTextField18.setText("D:\\SEGADEV\\GITHUB\\SF2DISASM\\build\\newsf2.bin");
+        jTextField18.setText(".\\sf2.bin");
         jTextField18.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField18ActionPerformed(evt);
@@ -569,13 +560,13 @@ public class MainEditor extends javax.swing.JFrame {
         jPanel12Layout.setHorizontalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel12Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
+                .addContainerGap()
                 .addComponent(jLabel18)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jButton26)
                     .addGroup(jPanel12Layout.createSequentialGroup()
-                        .addComponent(jTextField18, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
+                        .addComponent(jTextField18, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton28)))
                 .addContainerGap())
@@ -597,7 +588,7 @@ public class MainEditor extends javax.swing.JFrame {
 
         jLabel19.setText("Caravan ROM :");
 
-        jTextField19.setText("D:\\SEGADEV\\CARAVAN\\0.6\\newsf2.bin");
+        jTextField19.setText(".\\sf2.bin");
         jTextField19.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField19ActionPerformed(evt);
@@ -623,13 +614,13 @@ public class MainEditor extends javax.swing.JFrame {
         jPanel13Layout.setHorizontalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel13Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
+                .addContainerGap()
                 .addComponent(jLabel19)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jButton30)
                     .addGroup(jPanel13Layout.createSequentialGroup()
-                        .addComponent(jTextField19, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
+                        .addComponent(jTextField19, javax.swing.GroupLayout.DEFAULT_SIZE, 409, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton29)))
                 .addContainerGap())
@@ -651,7 +642,7 @@ public class MainEditor extends javax.swing.JFrame {
 
         jLabel15.setText("CSV game script :");
 
-        jTextField15.setText("D:\\SEGADEV\\GITHUB\\SF2DISASM\\disasm\\scripting\\textbanks\\gamescript.csv");
+        jTextField15.setText(".\\newgamescript.csv");
         jTextField15.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField15ActionPerformed(evt);
@@ -677,13 +668,13 @@ public class MainEditor extends javax.swing.JFrame {
         jPanel14Layout.setHorizontalGroup(
             jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel14Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
+                .addContainerGap()
                 .addComponent(jLabel15)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jButton13)
                     .addGroup(jPanel14Layout.createSequentialGroup()
-                        .addComponent(jTextField15, javax.swing.GroupLayout.DEFAULT_SIZE, 364, Short.MAX_VALUE)
+                        .addComponent(jTextField15, javax.swing.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton27)))
                 .addContainerGap())
@@ -717,69 +708,6 @@ public class MainEditor extends javax.swing.JFrame {
             .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
-        fileMenu.setMnemonic('f');
-        fileMenu.setText("File");
-
-        openMenuItem.setMnemonic('o');
-        openMenuItem.setText("Open");
-        fileMenu.add(openMenuItem);
-
-        saveMenuItem.setMnemonic('s');
-        saveMenuItem.setText("Save");
-        fileMenu.add(saveMenuItem);
-
-        saveAsMenuItem.setMnemonic('a');
-        saveAsMenuItem.setText("Save As ...");
-        saveAsMenuItem.setDisplayedMnemonicIndex(5);
-        fileMenu.add(saveAsMenuItem);
-
-        exitMenuItem.setMnemonic('x');
-        exitMenuItem.setText("Exit");
-        exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                exitMenuItemActionPerformed(evt);
-            }
-        });
-        fileMenu.add(exitMenuItem);
-
-        menuBar.add(fileMenu);
-
-        editMenu.setMnemonic('e');
-        editMenu.setText("Edit");
-
-        cutMenuItem.setMnemonic('t');
-        cutMenuItem.setText("Cut");
-        editMenu.add(cutMenuItem);
-
-        copyMenuItem.setMnemonic('y');
-        copyMenuItem.setText("Copy");
-        editMenu.add(copyMenuItem);
-
-        pasteMenuItem.setMnemonic('p');
-        pasteMenuItem.setText("Paste");
-        editMenu.add(pasteMenuItem);
-
-        deleteMenuItem.setMnemonic('d');
-        deleteMenuItem.setText("Delete");
-        editMenu.add(deleteMenuItem);
-
-        menuBar.add(editMenu);
-
-        helpMenu.setMnemonic('h');
-        helpMenu.setText("Help");
-
-        contentsMenuItem.setMnemonic('c');
-        contentsMenuItem.setText("Contents");
-        helpMenu.add(contentsMenuItem);
-
-        aboutMenuItem.setMnemonic('a');
-        aboutMenuItem.setText("About");
-        helpMenu.add(aboutMenuItem);
-
-        menuBar.add(helpMenu);
-
-        setJMenuBar(menuBar);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -805,10 +733,6 @@ public class MainEditor extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
-        System.exit(0);
-    }//GEN-LAST:event_exitMenuItemActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         TextManager.exportDisassembly(jTextField12.getText(),jTextField13.getText(),jTextField14.getText());
@@ -907,7 +831,6 @@ public class MainEditor extends javax.swing.JFrame {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = jFileChooser1.getSelectedFile();
             jTextField11.setText(file.getAbsolutePath());
-            jTextField15.setText(file.getAbsolutePath());
         }
     }//GEN-LAST:event_jButton17ActionPerformed
 
@@ -956,7 +879,6 @@ public class MainEditor extends javax.swing.JFrame {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = jFileChooser1.getSelectedFile();
             jTextField10.setText(file.getAbsolutePath());
-            jTextField14.setText(file.getAbsolutePath());
         }
     }//GEN-LAST:event_jButton16ActionPerformed
 
@@ -969,7 +891,6 @@ public class MainEditor extends javax.swing.JFrame {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = jFileChooser1.getSelectedFile();
             jTextField9.setText(file.getAbsolutePath());
-            jTextField13.setText(file.getAbsolutePath());
         }
     }//GEN-LAST:event_jButton15ActionPerformed
 
@@ -982,7 +903,6 @@ public class MainEditor extends javax.swing.JFrame {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = jFileChooser1.getSelectedFile();
             jTextField8.setText(file.getAbsolutePath());
-            jTextField12.setText(file.getAbsolutePath());
         }
     }//GEN-LAST:event_jButton14ActionPerformed
 
@@ -1030,15 +950,6 @@ public class MainEditor extends javax.swing.JFrame {
     }    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem aboutMenuItem;
-    private javax.swing.JMenuItem contentsMenuItem;
-    private javax.swing.JMenuItem copyMenuItem;
-    private javax.swing.JMenuItem cutMenuItem;
-    private javax.swing.JMenuItem deleteMenuItem;
-    private javax.swing.JMenu editMenu;
-    private javax.swing.JMenuItem exitMenuItem;
-    private javax.swing.JMenu fileMenu;
-    private javax.swing.JMenu helpMenu;
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton14;
@@ -1099,11 +1010,6 @@ public class MainEditor extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField19;
     private javax.swing.JTextField jTextField8;
     private javax.swing.JTextField jTextField9;
-    private javax.swing.JMenuBar menuBar;
-    private javax.swing.JMenuItem openMenuItem;
-    private javax.swing.JMenuItem pasteMenuItem;
-    private javax.swing.JMenuItem saveAsMenuItem;
-    private javax.swing.JMenuItem saveMenuItem;
     // End of variables declaration//GEN-END:variables
 
 }
