@@ -104,6 +104,7 @@ public class MainEditor extends javax.swing.JFrame {
         jFileChooser2.setFileSelectionMode(javax.swing.JFileChooser.DIRECTORIES_ONLY);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("SF2TextManager");
 
         jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder("Console"));
         jPanel7.setToolTipText("");
@@ -315,9 +316,9 @@ public class MainEditor extends javax.swing.JFrame {
 
             jTabbedPane1.addTab("Caravan ROM", jPanel8);
 
-            jLabel11.setText("CSV game script :");
+            jLabel11.setText("TXT game script :");
 
-            jTextField11.setText(".\\gamescript.csv");
+            jTextField11.setText(".\\gamescript.txt");
             jTextField11.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     jTextField11ActionPerformed(evt);
@@ -338,7 +339,7 @@ public class MainEditor extends javax.swing.JFrame {
                 }
             });
 
-            jLabel3.setText("<html>Select a CSV file.<br>CSV file must have the following format, with a semicolon as the separator :<br>line index;line</html>");
+            jLabel3.setText("<html>Select a TXT file.<br>TXT file must have the following format, with an equal sign as the separator :<br>line index=line</html>");
 
             javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
             jPanel9.setLayout(jPanel9Layout);
@@ -350,7 +351,7 @@ public class MainEditor extends javax.swing.JFrame {
                         .addGroup(jPanel9Layout.createSequentialGroup()
                             .addComponent(jLabel11)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jTextField11, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
+                            .addComponent(jTextField11, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jButton17))
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
@@ -374,7 +375,7 @@ public class MainEditor extends javax.swing.JFrame {
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             );
 
-            jTabbedPane1.addTab("CSV", jPanel9);
+            jTabbedPane1.addTab("TXT", jPanel9);
 
             javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
             jPanel3.setLayout(jPanel3Layout);
@@ -477,7 +478,7 @@ public class MainEditor extends javax.swing.JFrame {
                 }
             });
 
-            jLabel6.setText("<html>Select an existing target ROM file.<br>This export will update ROM file by overwriting previous text data : <br>ALWAYS MAKE BACKUPS !</html>");
+            jLabel6.setText("<html>Select an existing target ROM file to update. (MAKE BACKUPS !)<br>Warning : check the console logs, as this export has natural limitations.<br>Bigger trees (new character combinations) and bigger textbanks will override following data.</html>");
 
             javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
             jPanel12.setLayout(jPanel12Layout);
@@ -538,7 +539,7 @@ public class MainEditor extends javax.swing.JFrame {
                 }
             });
 
-            jLabel7.setText("<html>Select an existing target ROM file.<br>This export will update ROM file by overwriting previous text data : <br>ALWAYS MAKE BACKUPS !</html>");
+            jLabel7.setText("<html>Select an existing target ROM file to update. (MAKE BACKUPS !)<br>Warning : check the console logs, as this export has natural limitations.<br>New character combinations are allowed, but bigger textbanks will override following data.</html>");
 
             javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
             jPanel13.setLayout(jPanel13Layout);
@@ -576,9 +577,9 @@ public class MainEditor extends javax.swing.JFrame {
 
             jTabbedPane2.addTab("Caravan ROM", jPanel13);
 
-            jLabel15.setText("CSV game script :");
+            jLabel15.setText("TXT game script :");
 
-            jTextField15.setText(".\\gamescript.csv");
+            jTextField15.setText(".\\gamescript.txt");
             jTextField15.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     jTextField15ActionPerformed(evt);
@@ -599,7 +600,7 @@ public class MainEditor extends javax.swing.JFrame {
                 }
             });
 
-            jLabel9.setText("<html>Select a target file.<br>This export will create a new CSV file, with re-built line indexes.</html>");
+            jLabel9.setText("<html>Select a target file.<br>This export will create a new TXT file, with re-built line indexes.</html>");
 
             javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
             jPanel14.setLayout(jPanel14Layout);
@@ -611,7 +612,7 @@ public class MainEditor extends javax.swing.JFrame {
                         .addGroup(jPanel14Layout.createSequentialGroup()
                             .addComponent(jLabel15)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jTextField15, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
+                            .addComponent(jTextField15, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jButton27))
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel14Layout.createSequentialGroup()
@@ -635,7 +636,7 @@ public class MainEditor extends javax.swing.JFrame {
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             );
 
-            jTabbedPane2.addTab("CSV", jPanel14);
+            jTabbedPane2.addTab("TXT", jPanel14);
 
             javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
             jPanel5.setLayout(jPanel5Layout);
@@ -721,7 +722,8 @@ public class MainEditor extends javax.swing.JFrame {
                     .addContainerGap())
             );
 
-            pack();
+            setSize(new java.awt.Dimension(616, 638));
+            setLocationRelativeTo(null);
         }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -753,7 +755,7 @@ public class MainEditor extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton27ActionPerformed
 
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
-        TextManager.exportCsv(jTextField15.getText());
+        TextManager.exportTxt(jTextField15.getText());
     }//GEN-LAST:event_jButton13ActionPerformed
 
     private void jTextField18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField18ActionPerformed
@@ -789,7 +791,7 @@ public class MainEditor extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton30ActionPerformed
 
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
-        TextManager.importCsv(jTextField11.getText());
+        TextManager.importTxt(jTextField11.getText());
         jTable1.setModel(new TextTableModel(TextManager.gamescript));
     }//GEN-LAST:event_jButton12ActionPerformed
 

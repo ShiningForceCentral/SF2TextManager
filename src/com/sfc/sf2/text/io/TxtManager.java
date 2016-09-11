@@ -20,18 +20,18 @@ import java.util.logging.Logger;
  *
  * @author wiz
  */
-public class CsvManager {
+public class TxtManager {
     
-    public static String[] importCsv(String filepath){
+    public static String[] importTxt(String filepath){
         String[] gamescript = new String[0];
         try {
-            System.out.println("com.sfc.sf2.text.io.CsvManager.importCsv() - Importing CSV ...");
+            System.out.println("com.sfc.sf2.text.io.CsvManager.importTxt() - Importing TXT ...");
             Path path = Paths.get(filepath);
             List<String> lines = Files.readAllLines(path, Charset.forName(System.getProperty("file.encoding")));
             gamescript = new String[lines.size()];
             int i = 0;
             for(String line : lines){
-                int semiColonIndex = line.indexOf(";");
+                int semiColonIndex = line.indexOf("=");
                 if(semiColonIndex!=-1){
                     String lineWithoutIndex = line.substring(semiColonIndex+1);
                     gamescript[i] = lineWithoutIndex;
@@ -39,16 +39,16 @@ public class CsvManager {
                 }
                 i++;
             }
-            System.out.println("com.sfc.sf2.text.io.CsvManager.importCsv() - CSV imported.");
+            System.out.println("com.sfc.sf2.text.io.CsvManager.importTxt() - TXT imported.");
         } catch (IOException ex) {
             Logger.getLogger(TextManager.class.getName()).log(Level.SEVERE, null, ex);
         }
         return gamescript;                
     }
     
-    public static void exportCsv(String[] gamescript, String filepath){
+    public static void exportTxt(String[] gamescript, String filepath){
         try {
-            System.out.println("com.sfc.sf2.text.io.CsvManager.exportCsv() - Exporting CSV ...");
+            System.out.println("com.sfc.sf2.text.io.CsvManager.exportTxt() - Exporting TXT ...");
             Path path = Paths.get(filepath);
             PrintWriter pw;
             pw = new PrintWriter(path.toString(),System.getProperty("file.encoding"));
@@ -58,7 +58,7 @@ public class CsvManager {
                 while(hexIndex.length()<4){
                     hexIndex = "0" + hexIndex;
                 }
-                line = hexIndex+";"+line;
+                line = hexIndex+"="+line;
                 if(i+1!=gamescript.length){
                     pw.println(line);
                 }else{
@@ -68,7 +68,7 @@ public class CsvManager {
                 System.out.println("Line "+i+" : "+line);
             }
             pw.close();
-            System.out.println("com.sfc.sf2.text.io.CsvManager.exportCsv() - CSV exported.");
+            System.out.println("com.sfc.sf2.text.io.CsvManager.exportTxt() - TXT exported.");
         } catch (IOException ex) {
             Logger.getLogger(TextManager.class.getName()).log(Level.SEVERE, null, ex);
         }

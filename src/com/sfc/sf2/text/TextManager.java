@@ -5,7 +5,7 @@
  */
 package com.sfc.sf2.text;
 
-import com.sfc.sf2.text.io.CsvManager;
+import com.sfc.sf2.text.io.TxtManager;
 import com.sfc.sf2.text.io.DisassemblyManager;
 import com.sfc.sf2.text.io.RomManager;
 
@@ -17,7 +17,6 @@ public class TextManager {
     
     public static String[] gamescript;
        
-    
     public static void importDisassembly(String basePath){
         System.out.println("com.sfc.sf2.text.TextManager.importDisassembly() - Importing disassembly ...");
         TextManager.gamescript = DisassemblyManager.importDisassembly(basePath);
@@ -45,7 +44,7 @@ public class TextManager {
     public static void importCaravanRom(String caravanRomFilePath){
         System.out.println("com.sfc.sf2.text.TextManager.importCaravanRom() - Importing Caravan ROM ...");
         TextManager.gamescript = RomManager.importRom(RomManager.CARAVAN_ROM_TYPE,caravanRomFilePath);
-        System.out.println("com.sfc.sf2.text.TextManager.importCaravanRom() - Original ROM imported.");
+        System.out.println("com.sfc.sf2.text.TextManager.importCaravanRom() - Caravan ROM imported.");
     }
     
     public static void exportCaravanRom(String caravanRomFilePath){
@@ -54,17 +53,32 @@ public class TextManager {
         System.out.println("com.sfc.sf2.text.TextManager.exportCaravanRom() - Caravan ROM exported.");        
     }    
     
-    public static void importCsv(String filepath){
-        System.out.println("com.sfc.sf2.text.TextManager.importCsv() - Importing CSV ...");
-        gamescript = CsvManager.importCsv(filepath);
-        System.out.println("com.sfc.sf2.text.TextManager.importCsv() - CSV imported.");
+    public static void importTxt(String filepath){
+        System.out.println("com.sfc.sf2.text.TextManager.importTxt() - Importing TXT ...");
+        gamescript = TxtManager.importTxt(filepath);
+        System.out.println("com.sfc.sf2.text.TextManager.importTxt() - TXT imported.");
     }
     
-    public static void exportCsv(String filepath){
-        System.out.println("com.sfc.sf2.text.TextManager.exportCsv() - Exporting CSV ...");
-        CsvManager.exportCsv(gamescript, filepath);
-        System.out.println("com.sfc.sf2.text.TextManager.exportCsv() - CSV exported.");       
+    public static void exportTxt(String filepath){
+        System.out.println("com.sfc.sf2.text.TextManager.exportTxt() - Exporting TXT ...");
+        TxtManager.exportTxt(gamescript, filepath);
+        System.out.println("com.sfc.sf2.text.TextManager.exportTxt() - TXT exported.");       
+    }
+     
+    public static String getLine(int index){
+        return gamescript[index];
     }
     
-    //TODO add API functions : getLine, setLine, addLine, removeLine ... 
+    public static void setLine(int index, String line){
+        gamescript[index] = line;
+    }
+    
+    public static int addLine(String line){
+        String[] newGamescript = new String[gamescript.length+1];
+        System.arraycopy(gamescript, 0, newGamescript, 0, gamescript.length);
+        newGamescript[gamescript.length] = line;
+        gamescript = newGamescript;
+        return gamescript.length-1;
+    }
+    
 }
