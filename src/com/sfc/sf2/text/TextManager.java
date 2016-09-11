@@ -15,18 +15,18 @@ import com.sfc.sf2.text.io.RomManager;
  */
 public class TextManager {
     
-    private static String[] gamescript;
+    public static String[] gamescript;
        
     
-    public static void importDisassembly(String huffmanTreeOffsetsFilePath, String huffmanTreesFilePath, String firstTextbankFilePath){
+    public static void importDisassembly(String basePath){
         System.out.println("com.sfc.sf2.text.TextManager.importDisassembly() - Importing disassembly ...");
-        TextManager.gamescript = DisassemblyManager.importDisassembly(huffmanTreeOffsetsFilePath,huffmanTreesFilePath,firstTextbankFilePath);
+        TextManager.gamescript = DisassemblyManager.importDisassembly(basePath);
         System.out.println("com.sfc.sf2.text.TextManager.importDisassembly() - Disassembly imported.");
     }
     
-    public static void exportDisassembly(String huffmanTreeOffsetsFilePath, String huffmanTreesFilePath, String firstTextbankFilePath){
+    public static void exportDisassembly(String basePath){
         System.out.println("com.sfc.sf2.text.TextManager.importDisassembly() - Exporting disassembly ...");
-        DisassemblyManager.exportDisassembly(gamescript, huffmanTreeOffsetsFilePath,huffmanTreesFilePath,firstTextbankFilePath);
+        DisassemblyManager.exportDisassembly(gamescript, basePath);
         System.out.println("com.sfc.sf2.text.TextManager.importDisassembly() - Disassembly exported.");        
     }   
     
@@ -66,5 +66,5 @@ public class TextManager {
         System.out.println("com.sfc.sf2.text.TextManager.exportCsv() - CSV exported.");       
     }
     
-    
+    //TODO add API functions : getLine, setLine, addLine, removeLine ... 
 }

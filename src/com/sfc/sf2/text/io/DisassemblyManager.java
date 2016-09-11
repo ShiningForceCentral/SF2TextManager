@@ -8,15 +8,11 @@ package com.sfc.sf2.text.io;
 import com.sfc.sf2.text.TextManager;
 import com.sfc.sf2.text.compression.TextDecoder;
 import com.sfc.sf2.text.compression.TextEncoder;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,44 +22,31 @@ import java.util.logging.Logger;
  */
 public class DisassemblyManager {
     
-    private static File huffmanTreeOffsetsFile;
-    private static File huffmanTreesFile;
-    private static File textbankFile;   
+    public static final String HUFFMANTREEOFFSETS_FILENAME = "huffmantreeoffsets.bin";
+    public static final String HUFFMANTREES_FILENAME = "huffmantrees.bin";
+    public static final String TEXTBANK_FILENAME = "textbankXX.bin";  
     
-    public static String[] importDisassembly(String huffmanTreeOffsetsFilePath, String huffmanTreesFilePath, String firstTextbankFilePath){
+    public static String[] importDisassembly(String basePath){
         System.out.println("com.sfc.sf2.text.io.DisassemblyManager.importDisassembly() - Importing disassembly ...");
-        DisassemblyManager.openFiles(huffmanTreeOffsetsFilePath,huffmanTreesFilePath,firstTextbankFilePath);
-        DisassemblyManager.parseOffsets();
-        DisassemblyManager.parseTrees();
-        String[] gamescript = DisassemblyManager.parseAllTextbanks();        
+        DisassemblyManager.parseOffsets(basePath);
+        DisassemblyManager.parseTrees(basePath);
+        String[] gamescript = DisassemblyManager.parseAllTextbanks(basePath);        
         System.out.println("com.sfc.sf2.text.io.DisassemblyManager.importDisassembly() - Disassembly imported.");
         return gamescript;
     }
     
-    public static void exportDisassembly(String[] gamescript, String huffmanTreeOffsetsFilePath, String huffmanTreesFilePath, String firstTextbankFilePath){
+    public static void exportDisassembly(String[] gamescript, String basePath){
         System.out.println("com.sfc.sf2.text.io.DisassemblyManager.exportDisassembly() - Exporting disassembly ...");
         DisassemblyManager.produceTrees(gamescript);
         DisassemblyManager.produceTextbanks(gamescript);
-        DisassemblyManager.writeFiles(huffmanTreeOffsetsFilePath,huffmanTreesFilePath,firstTextbankFilePath);
+        DisassemblyManager.writeFiles(basePath);
         System.out.println("com.sfc.sf2.text.io.DisassemblyManager.exportDisassembly() - Disassembly exported.");        
     }    
     
-    private static String openFiles(String huffmanTreeOffsetsFilepath, String huffmanTreesFilepath, String textbankFilepath){
-        System.out.println("com.sfc.sf2.text.io.DisassemblyManager.openFiles() - Filepaths :"
-                + "\nHuffman tree offsets : " + huffmanTreeOffsetsFilepath
-                + "\nHuffman trees : " + huffmanTreesFilepath
-                + "\nTextbank : " + textbankFilepath);
-        huffmanTreeOffsetsFile = new File(huffmanTreeOffsetsFilepath);
-        huffmanTreesFile = new File(huffmanTreesFilepath);
-        textbankFile = new File(textbankFilepath);
-        System.out.println("com.sfc.sf2.text.io.DisassemblyManager.openFiles() - Files opened.");
-        return textbankFile.getParent();
-    }
-    
-    private static void parseOffsets(){
+    private static void parseOffsets(String basePath){
         try{
             System.out.println("com.sfc.sf2.text.io.DisassemblyManager.parseOffsets() - Parsing offsets ...");
-            Path path = Paths.get(huffmanTreeOffsetsFile.getAbsolutePath());
+            Path path = Paths.get(basePath + HUFFMANTREEOFFSETS_FILENAME);
             byte[] data = Files.readAllBytes(path);
             TextDecoder.parseOffsets(data);
             System.out.println("com.sfc.sf2.text.io.DisassemblyManager.parseOffsets() - Offsets parsed.");
@@ -72,10 +55,10 @@ public class DisassemblyManager {
         }
     }
     
-    private static void parseTrees(){
+    private static void parseTrees(String basePath){
         try{
             System.out.println("com.sfc.sf2.text.io.DisassemblyManager.parseTrees() - Parsing trees ...");
-            Path path = Paths.get(huffmanTreesFile.getAbsolutePath());
+            Path path = Paths.get(basePath + HUFFMANTREES_FILENAME);
             byte[] data = Files.readAllBytes(path);
             TextDecoder.parseTrees(data);
             System.out.println("com.sfc.sf2.text.io.DisassemblyManager.parseTrees() - Trees parsed.");            
@@ -84,16 +67,13 @@ public class DisassemblyManager {
         }
     }
     
-    private static String[] parseAllTextbanks(){
+    private static String[] parseAllTextbanks(String basePath){
         System.out.println("com.sfc.sf2.text.io.DisassemblyManager.parseTextbank() - Parsing textbank ...");
         String[] gamescript = new String[0];        
         try{
             for(int i=0;i<100;i++){
-                String index = Integer.toString(i);
-                while(index.length()<2){
-                    index = "0"+index;
-                }
-                Path path = Paths.get(textbankFile.getParent() + File.separator + textbankFile.getName().replace("00", index));
+                String index = String.format("%02d", i);
+                Path path = Paths.get(basePath + TEXTBANK_FILENAME.replace("XX.bin", index+".bin"));
                 byte[] data = Files.readAllBytes(path); 
                 String[] textbankStrings = TextDecoder.parseTextbank(data, i);
                 String[] workingStringArray = Arrays.copyOf(gamescript, gamescript.length + textbankStrings.length);
@@ -121,15 +101,12 @@ public class DisassemblyManager {
         System.out.println("com.sfc.sf2.text.io.DisassemblyManager.produceTextbanks() - Text banks produced.");
     }    
   
-    private static void writeFiles(String huffmanTreeOffsetsFilePath, String huffmanTreesFilePath, String firstTextbankFilePath){
+    private static void writeFiles(String basePath){
         try {
             System.out.println("com.sfc.sf2.text.io.DisassemblyManager.writeFiles() - Writing files ...");
-            Date d = new Date();
-            DateFormat df = new SimpleDateFormat("YYMMddHHmmss");
-            String dateString = df.format(d);
-            Path offsetsFilePath = Paths.get(huffmanTreeOffsetsFilePath);
-            Path treesFilePath = Paths.get(huffmanTreesFilePath);
-            Path testbankFilePath = Paths.get(firstTextbankFilePath);
+            Path offsetsFilePath = Paths.get(basePath + HUFFMANTREEOFFSETS_FILENAME);
+            Path treesFilePath = Paths.get(basePath + HUFFMANTREES_FILENAME);
+            Path testbankFilePath = Paths.get(basePath + TEXTBANK_FILENAME);
             byte[] newHuffmantreeOffsetsFileBytes = TextEncoder.getNewHuffmantreeOffsetsFileBytes();
             byte[] newHuffmanTreesFileBytes = TextEncoder.getNewHuffmanTreesFileBytes();
             byte[][] newTextbanks = TextEncoder.getNewTextbanks();
@@ -138,11 +115,8 @@ public class DisassemblyManager {
             Files.write(treesFilePath, newHuffmanTreesFileBytes);
             System.out.println(newHuffmanTreesFileBytes.length + " bytes into " + treesFilePath);
             for(int i=0;i<newTextbanks.length;i++){
-                String index = String.valueOf(i);
-                while(index.length()<2){
-                    index = "0"+index;
-                }
-                Path textbankFilePath = Paths.get(testbankFilePath.getParent() + File.separator + testbankFilePath.getFileName().toString().replace("00", index));
+                String index = String.format("%02d", i);
+                Path textbankFilePath = Paths.get(testbankFilePath.toString().replace("XX.bin", index+".bin"));
                 Files.write(textbankFilePath, newTextbanks[i]);
                 System.out.println(newTextbanks[i].length + " bytes into " + textbankFilePath);
             }

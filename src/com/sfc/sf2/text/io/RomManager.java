@@ -61,11 +61,11 @@ public class RomManager {
     }
     
     public static void exportRom(int romType, String[] gamescript, String romFilePath){
-        System.out.println("com.sfc.sf2.text.io.RomManager.importDisassembly() - Exporting disassembly ...");
+        System.out.println("com.sfc.sf2.text.io.RomManager.exportRom() - Exporting ROM ...");
         RomManager.produceTrees(gamescript);
         RomManager.produceTextbanks(gamescript);
         RomManager.writeFile(romType, romFilePath);
-        System.out.println("com.sfc.sf2.text.io.RomManager.importDisassembly() - Disassembly exported.");        
+        System.out.println("com.sfc.sf2.text.io.RomManager.exportRom() - ROM exported.");        
     }    
     
     private static void openFile(String romFilePath){
