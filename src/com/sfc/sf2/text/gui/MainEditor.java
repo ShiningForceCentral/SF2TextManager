@@ -15,6 +15,8 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -58,7 +60,7 @@ public class MainEditor extends javax.swing.JFrame {
             public void changedUpdate(DocumentEvent e) {
                 filterRows();
             }
-        });        
+        }); 
     }
 
     /**

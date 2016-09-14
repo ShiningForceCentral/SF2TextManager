@@ -5,7 +5,11 @@
  */
 package com.sfc.sf2.text.gui;
 
+import com.sfc.sf2.text.TextManager;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -28,11 +32,22 @@ public class TextTableModel extends AbstractTableModel {
             tableData[i][0] = hexIndex;
             tableData[i][1] = gamescript[i];
         }
+        
     }
+    
+    @Override
+    public Object getValueAt(int row, int col) {
+        return tableData[row][col];
+    }
+    @Override
+    public void setValueAt(Object value, int row, int col) {
+        tableData[row][col] = (String)value;
+        TextManager.setLine(row, (String)value);
+    }    
  
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return false;
+        return columnIndex==1;
     }    
     
     @Override
@@ -50,8 +65,4 @@ public class TextTableModel extends AbstractTableModel {
         return columns[columnIndex];
     }
  
-    @Override
-    public Object getValueAt(int rowIndex, int columnIndex) {
-        return tableData[rowIndex][columnIndex];
-    }
 }
