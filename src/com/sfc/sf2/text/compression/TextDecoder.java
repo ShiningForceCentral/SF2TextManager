@@ -57,10 +57,14 @@ public class TextDecoder {
     }        
     
     public static String[] parseTextbank(byte[] data, int textbankIndex){
+        return parseTextbank(data, textbankIndex, 256);
+    }
+    
+    public static String[] parseTextbank(byte[] data, int textbankIndex, int linesToParse){
         short bankPointer = 0;
-        String[] textbankStrings = new String[256];
+        String[] textbankStrings = new String[linesToParse];
         int i;
-        for(i=0;i<256;i++){
+        for(i=0;i<linesToParse;i++){
             String s = parseString(data,(short)(bankPointer+1));
             String stringIndex = Integer.toString(textbankIndex*256+i,16).toUpperCase();
             while(stringIndex.length()<4){

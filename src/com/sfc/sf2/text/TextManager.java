@@ -5,6 +5,7 @@
  */
 package com.sfc.sf2.text;
 
+import com.sfc.sf2.text.io.CustomManager;
 import com.sfc.sf2.text.io.TxtManager;
 import com.sfc.sf2.text.io.DisassemblyManager;
 import com.sfc.sf2.text.io.RomManager;
@@ -48,10 +49,22 @@ public class TextManager {
     }
     
     public static void exportCaravanRom(String caravanRomFilePath){
-        System.out.println("com.sfc.sf2.text.TextManager.exportCaravanRom() - Exporting original ROM ...");
+        System.out.println("com.sfc.sf2.text.TextManager.exportCaravanRom() - Exporting Caravan ROM ...");
         RomManager.exportRom(RomManager.CARAVAN_ROM_TYPE, TextManager.gamescript, caravanRomFilePath);
         System.out.println("com.sfc.sf2.text.TextManager.exportCaravanRom() - Caravan ROM exported.");        
-    }    
+    } 
+    
+    public static void importCustomRom(String customRomFilePath, int huffmanTreeOffsetsBegin, int huffmanTreeOffsetsEnd, int huffmanTreesOffsetsBegin, int huffmanTreesOffsetsEnd, int textbanksOffsetsPointerOffset, int lastLineIndex){
+        System.out.println("com.sfc.sf2.text.TextManager.importCustomRom() - Importing Custom ROM ...");
+        TextManager.gamescript = CustomManager.importRom(customRomFilePath, huffmanTreeOffsetsBegin, huffmanTreeOffsetsEnd, huffmanTreesOffsetsBegin, huffmanTreesOffsetsEnd, textbanksOffsetsPointerOffset, lastLineIndex);
+        System.out.println("com.sfc.sf2.text.TextManager.importCustomRom() - Custom ROM imported.");
+    }
+    
+    public static void exportCustomRom(String customRomFilePath, int huffmanTreeOffsetsOffset, int huffmanTreesOffset, int textbanksPointerOffset, int textbanksOffset){
+        System.out.println("com.sfc.sf2.text.TextManager.exportCustomRom() - Exporting Custom ROM ...");
+        CustomManager.exportRom(TextManager.gamescript, customRomFilePath, huffmanTreeOffsetsOffset, huffmanTreesOffset, textbanksPointerOffset, textbanksOffset);
+        System.out.println("com.sfc.sf2.text.TextManager.exportCustomRom() - Custom ROM exported.");        
+    }     
     
     public static void importTxt(String filepath){
         System.out.println("com.sfc.sf2.text.TextManager.importTxt() - Importing TXT ...");
