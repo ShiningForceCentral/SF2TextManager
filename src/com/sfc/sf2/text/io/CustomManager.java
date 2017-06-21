@@ -48,7 +48,7 @@ public class CustomManager {
         System.out.println("com.sfc.sf2.text.io.CustomManager.exportRom() - Exporting ROM ...");
         CustomManager.produceTrees(gamescript);
         CustomManager.produceTextbanks(gamescript);
-        CustomManager.writeFile(romFilePath);
+        CustomManager.writeFile(romFilePath, huffmanTreeOffsetsOffset, huffmanTreesOffset, textbanksPointerOffset, textbanksOffset);
         System.out.println("com.sfc.sf2.text.io.CustomManager.exportRom() - ROM exported.");        
     }    
     
@@ -84,7 +84,7 @@ public class CustomManager {
         int textbanksOffsetsPointer = bytesToInt(textbanksOffsetsPointerBytes);
         int numberOfTextbanks = (lastLineIndex+1 + LINES_PER_BANK-1) / LINES_PER_BANK;
         int lastTextbankLines = ((lastLineIndex+1) % LINES_PER_BANK);
-        for(int i=0;i<numberOfTextbanks;i++){
+        for(int i=0;i<numberOfTextbanks;i++){ 
             String index = Integer.toString(i);
             while(index.length()<2){
                 index = "0"+index;
@@ -102,91 +102,82 @@ public class CustomManager {
     }
     
     private static void produceTrees(String[] gamescript) {
-        System.out.println("com.sfc.sf2.text.io.DisassemblyManager.produceTrees() - Producing trees ...");
+        System.out.println("com.sfc.sf2.text.io.CustomManager.produceTrees() - Producing trees ...");
         TextEncoder.produceTrees(gamescript);
-        System.out.println("com.sfc.sf2.text.io.DisassemblyManager.produceTrees() - Trees produced.");
+        System.out.println("com.sfc.sf2.text.io.CustomManager.produceTrees() - Trees produced.");
     }
 
     private static void produceTextbanks(String[] gamescript) {
-        System.out.println("com.sfc.sf2.text.io.DisassemblyManager.produceTextbanks() - Producing text banks ...");
+        System.out.println("com.sfc.sf2.text.io.CustomManager.produceTextbanks() - Producing text banks ...");
         TextEncoder.produceTextbanks(gamescript);
-        System.out.println("com.sfc.sf2.text.io.DisassemblyManager.produceTextbanks() - Text banks produced.");
+        System.out.println("com.sfc.sf2.text.io.CustomManager.produceTextbanks() - Text banks produced.");
     }    
   
-    private static void writeFile(String romFilePath){
-        /*
+    private static void writeFile(String romFilePath, int huffmanTreeOffsetsOffset, int huffmanTreesOffset, int textbanksPointerOffset, int textbanksOffset){
+
         try {
             System.out.println("com.sfc.sf2.text.io.CustomManager.writeFiles() - Writing file ...");
-            Date d = new Date();
-            DateFormat df = new SimpleDateFormat("YYMMddHHmmss");
-            String dateString = df.format(d);
-            boolean override = false;
+
             romFile = new File(romFilePath);
             Path romPath = Paths.get(romFile.getAbsolutePath());
             romData = Files.readAllBytes(romPath);
             byte[] newHuffmantreeOffsetsFileBytes = TextEncoder.getNewHuffmantreeOffsetsFileBytes();
-            System.arraycopy(newHuffmantreeOffsetsFileBytes, 0, romData, HUFFMANTREEOFFSETS_OFFSETS[romType][0], newHuffmantreeOffsetsFileBytes.length);
+            System.arraycopy(newHuffmantreeOffsetsFileBytes, 0, romData, huffmanTreeOffsetsOffset, newHuffmantreeOffsetsFileBytes.length);
             System.out.println("Huffman tree offsets : "+newHuffmantreeOffsetsFileBytes.length 
-                    + " bytes written at offset 0x" + Integer.toHexString(HUFFMANTREEOFFSETS_OFFSETS[romType][0]).toUpperCase()); 
-            int originalHuffmantreeOffsetsSize = HUFFMANTREEOFFSETS_OFFSETS[romType][1]-HUFFMANTREEOFFSETS_OFFSETS[romType][0];
-            if(newHuffmantreeOffsetsFileBytes.length>originalHuffmantreeOffsetsSize){
-                override = true;
-                System.err.println("ERROR : NEW HUFFMAN TREE OFFSETS SIZE "+newHuffmantreeOffsetsFileBytes.length
-                        +" IS HIGHER THAN ORIGINAL SIZE "+originalHuffmantreeOffsetsSize+" ! THIS WILL OVERRIDE NEXT DATA CHUNK.");
-            }
+                    + " bytes written at offset 0x" + Integer.toHexString(huffmanTreeOffsetsOffset).toUpperCase()
+                    + "..0x" + Integer.toHexString(huffmanTreeOffsetsOffset+newHuffmantreeOffsetsFileBytes.length).toUpperCase()); 
             byte[] newHuffmanTreesFileBytes = TextEncoder.getNewHuffmanTreesFileBytes();
-            System.arraycopy(newHuffmanTreesFileBytes, 0, romData, HUFFMANTREES_OFFSETS[romType][0], newHuffmanTreesFileBytes.length);
+            System.arraycopy(newHuffmanTreesFileBytes, 0, romData, huffmanTreesOffset, newHuffmanTreesFileBytes.length);
             System.out.println("Huffman trees : "+newHuffmanTreesFileBytes.length 
-                    + " bytes written at offset 0x" + Integer.toHexString(HUFFMANTREES_OFFSETS[romType][0]).toUpperCase());           
-            int originalHuffmantreesSize = HUFFMANTREES_OFFSETS[romType][1]-HUFFMANTREES_OFFSETS[romType][0];
-            if(romType==ORIGINAL_ROM_TYPE && newHuffmanTreesFileBytes.length>originalHuffmantreesSize){
-                override = true;
-                System.err.println("ERROR : NEW HUFFMAN TREES SIZE "+newHuffmanTreesFileBytes.length
-                        +" IS HIGHER THAN ORIGINAL SIZE "+originalHuffmantreesSize+" ! THIS WILL OVERRIDE TEXTBANK 00."
-                        + "\nTo avoid this, use a caravan-expanded rom, or use a disassembly.");
-            }            
+                    + " bytes written at offset 0x" + Integer.toHexString(huffmanTreesOffset).toUpperCase()
+                    + "..0x" + Integer.toHexString(huffmanTreesOffset+newHuffmanTreesFileBytes.length).toUpperCase());           
+           
             byte[][] newTextbanks = TextEncoder.getNewTextbanks();
+            int[] textbankOffsets = new int[newTextbanks.length];
+            int textbankCursor = textbanksOffset;
             for(int i=0;i<newTextbanks.length;i++){
                 String index = String.valueOf(i);
                 while(index.length()<2){
                     index = "0"+index;
                 }
-                System.arraycopy(newTextbanks[i], 0, romData, TEXTBANKS_OFFSETS[romType][i], newTextbanks[i].length);
-                int sizeComparison = (TEXTBANKS_OFFSETS[romType][i+1]-TEXTBANKS_OFFSETS[romType][i]) - newTextbanks[i].length;
-                StringBuilder sb = new StringBuilder();
-                if(sizeComparison > 0){
-                    sb.append("Saved ").append(sizeComparison).append(" bytes compared to original size (").append(TEXTBANKS_OFFSETS[romType][i+1]-TEXTBANKS_OFFSETS[romType][i]).append(" bytes)");
-                }else{
-                    sb.append("Added ").append(sizeComparison).append(" bytes compared to original size (").append(TEXTBANKS_OFFSETS[romType][i+1]-TEXTBANKS_OFFSETS[romType][i]).append(" bytes)");
-                }
+                System.arraycopy(newTextbanks[i], 0, romData, textbankCursor, newTextbanks[i].length);
                 System.out.println("Textbank "+index+" : "+newTextbanks[i].length 
-                        + " bytes written at offset 0x" + Integer.toHexString(TEXTBANKS_OFFSETS[romType][i]).toUpperCase()
-                        + " <- " + sb.toString());
-                int originalTextbankSize = TEXTBANKS_OFFSETS[romType][i+1]-TEXTBANKS_OFFSETS[romType][i];
-                if(newTextbanks[i].length>originalTextbankSize){
-                    override = true;
-                    System.err.println("ERROR : NEW TEXTBANK SIZE "+newTextbanks[i].length
-                            +" IS HIGHER THAN ORIGINAL SIZE "+originalTextbankSize+" ! THIS WILL OVERRIDE NEXT DATA ITEM."
-                            + "\nTo avoid this, use a disassembly.");
-                }                 
+                        + " bytes written at offset 0x" + Integer.toHexString(textbankCursor).toUpperCase()
+                        + "..0x" + Integer.toHexString(textbankCursor+newTextbanks[i].length).toUpperCase());
+                textbankOffsets[i] = textbankCursor;
+                textbankCursor+=newTextbanks[i].length;
             }
+            if(textbankCursor%2>0){
+                textbankCursor++; /* align on even address */
+            }
+            int textbanksPointerValue = textbankCursor;
+            byte[] pointerBytes = intToFourByteArray(textbanksPointerValue);
+            System.arraycopy(pointerBytes, 0, romData, textbanksPointerOffset, 4);
+            for(int i=0;i<textbankOffsets.length;i++){
+                System.arraycopy(intToFourByteArray(textbankOffsets[i]), 0, romData, textbankCursor, 4);
+                textbankCursor+=4;
+            }
+            System.out.println("Textbank offsets : "+textbankOffsets.length*4 
+                    + " bytes written at offset 0x" + Integer.toHexString(textbanksPointerValue).toUpperCase()
+                    + "..0x" + Integer.toHexString(textbanksPointerValue+textbankOffsets.length*4).toUpperCase());
+            
             Files.write(romPath,romData);
             System.out.println(romData.length + " bytes into " + romFilePath);  
-            if(override){
-                System.err.println("ERROR : DATA OVERRIDING HAPPENED. MORE DETAILS IN PREVIOUS LOGS.");
-            }
             System.out.println("com.sfc.sf2.text.io.CustomManager.writeFiles() - File written.");
         } catch (IOException ex) {
             Logger.getLogger(TextManager.class.getName()).log(Level.SEVERE, null, ex);
         }
-        */
+
     }    
     
     private static int bytesToInt(byte[] bytes){
         ByteBuffer bb = ByteBuffer.wrap(bytes);
         bb.order(ByteOrder.BIG_ENDIAN);
         return bb.getInt();
-
+    }
+    
+    public static  byte[] intToFourByteArray(int value){
+        return ByteBuffer.allocate(4).order(ByteOrder.BIG_ENDIAN).putInt(value).array();
     }
     
 }

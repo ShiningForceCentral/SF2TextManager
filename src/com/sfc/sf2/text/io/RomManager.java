@@ -112,23 +112,20 @@ public class RomManager {
     }
     
     private static void produceTrees(String[] gamescript) {
-        System.out.println("com.sfc.sf2.text.io.DisassemblyManager.produceTrees() - Producing trees ...");
+        System.out.println("com.sfc.sf2.text.io.RomManager.produceTrees() - Producing trees ...");
         TextEncoder.produceTrees(gamescript);
-        System.out.println("com.sfc.sf2.text.io.DisassemblyManager.produceTrees() - Trees produced.");
+        System.out.println("com.sfc.sf2.text.io.RomManager.produceTrees() - Trees produced.");
     }
 
     private static void produceTextbanks(String[] gamescript) {
-        System.out.println("com.sfc.sf2.text.io.DisassemblyManager.produceTextbanks() - Producing text banks ...");
+        System.out.println("com.sfc.sf2.text.io.RomManager.produceTextbanks() - Producing text banks ...");
         TextEncoder.produceTextbanks(gamescript);
-        System.out.println("com.sfc.sf2.text.io.DisassemblyManager.produceTextbanks() - Text banks produced.");
+        System.out.println("com.sfc.sf2.text.io.RomManager.produceTextbanks() - Text banks produced.");
     }    
   
     private static void writeFile(int romType, String romFilePath){
         try {
             System.out.println("com.sfc.sf2.text.io.RomManager.writeFiles() - Writing file ...");
-            Date d = new Date();
-            DateFormat df = new SimpleDateFormat("YYMMddHHmmss");
-            String dateString = df.format(d);
             boolean override = false;
             romFile = new File(romFilePath);
             Path romPath = Paths.get(romFile.getAbsolutePath());

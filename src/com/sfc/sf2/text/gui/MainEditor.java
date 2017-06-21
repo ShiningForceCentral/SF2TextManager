@@ -929,7 +929,7 @@ public class MainEditor extends javax.swing.JFrame {
 
             jLabel32.setText("Textbanks : 0x");
 
-            jTextField32.setText("28000");
+            jTextField32.setText("2EB34");
             jTextField32.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     jTextField32ActionPerformed(evt);

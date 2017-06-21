@@ -1306,7 +1306,7 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="jTextField32">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="28000"/>
+                    <Property name="text" type="java.lang.String" value="2EB34"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextField32ActionPerformed"/>
