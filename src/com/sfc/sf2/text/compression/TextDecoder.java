@@ -65,15 +65,16 @@ public class TextDecoder {
         String[] textbankStrings = new String[linesToParse];
         int i;
         for(i=0;i<linesToParse;i++){
+            int lineLength = (data[bankPointer]&0xFF);
             String s = parseString(data,(short)(bankPointer+1));
             String stringIndex = Integer.toString(textbankIndex*256+i,16).toUpperCase();
             while(stringIndex.length()<4){
                 stringIndex = "0"+stringIndex;
             }
-            System.out.println("$"+stringIndex+";"+s);
+            System.out.println("$"+stringIndex+"("+lineLength+")="+s);
             //System.out.println(Arrays.toString(Arrays.copyOfRange(data,bankPointer+1,(bankPointer+data[bankPointer]+1))));
             textbankStrings[i] = s;
-            bankPointer += data[bankPointer]+1;
+            bankPointer += (data[bankPointer]&0xFF)+1;
             if(bankPointer+1>=data.length){
                 textbankStrings = Arrays.copyOfRange(textbankStrings,0,i+1);
                 break;
