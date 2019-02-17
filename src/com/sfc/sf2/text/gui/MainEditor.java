@@ -8,6 +8,9 @@ package com.sfc.sf2.text.gui;
 import com.sfc.sf2.text.TextManager;
 import java.io.File;
 import java.io.PrintStream;
+import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JTextArea;
 import javax.swing.RowFilter;
@@ -32,35 +35,39 @@ public class MainEditor extends javax.swing.JFrame {
      * Creates new form NewApplication
      */
     public MainEditor() {
-        initComponents();
-        initConsole(jTextArea1);
-        File workingDirectory = new File(MainEditor.class.getProtectionDomain().getCodeSource().getLocation().getPath());
-        System.setProperty("user.dir", workingDirectory.getParent());
-        jFileChooser1.setCurrentDirectory(workingDirectory);
-        jFileChooser2.setCurrentDirectory(workingDirectory);
-        MainEditor.currentMainEditor = this;
-        // Listen for changes in the text filter textfield
-        jTextField1.getDocument().addDocumentListener(new DocumentListener() {
-
-            public void filterRows() {
-                currentMainEditor.filterRows(currentMainEditor.jTextField1.getText());
-            }
-
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                filterRows();
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                filterRows();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                filterRows();
-            }
-        }); 
+        try {
+            initComponents();
+            initConsole(jTextArea1);
+            File workingDirectory = new File(MainEditor.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile();
+            System.setProperty("user.dir", workingDirectory.toString());
+            jFileChooser1.setCurrentDirectory(workingDirectory);
+            jFileChooser2.setCurrentDirectory(workingDirectory);
+            MainEditor.currentMainEditor = this;
+            // Listen for changes in the text filter textfield
+            jTextField1.getDocument().addDocumentListener(new DocumentListener() {
+                
+                public void filterRows() {
+                    currentMainEditor.filterRows(currentMainEditor.jTextField1.getText());
+                }
+                
+                @Override
+                public void insertUpdate(DocumentEvent e) {
+                    filterRows();
+                }
+                
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    filterRows();
+                }
+                
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                    filterRows();
+                } 
+            });
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(MainEditor.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
