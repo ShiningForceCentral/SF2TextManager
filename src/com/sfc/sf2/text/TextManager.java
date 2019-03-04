@@ -5,6 +5,7 @@
  */
 package com.sfc.sf2.text;
 
+import com.sfc.sf2.text.io.AsmManager;
 import com.sfc.sf2.text.io.CustomManager;
 import com.sfc.sf2.text.io.TxtManager;
 import com.sfc.sf2.text.io.DisassemblyManager;
@@ -76,6 +77,12 @@ public class TextManager {
         System.out.println("com.sfc.sf2.text.TextManager.exportTxt() - Exporting TXT ...");
         TxtManager.exportTxt(gamescript, filepath);
         System.out.println("com.sfc.sf2.text.TextManager.exportTxt() - TXT exported.");       
+    }
+       
+    public static void importAsm(String path){
+        System.out.println("com.sfc.sf2.text.TextManager.importDisassembly() - Importing disassembly ...");
+        TextManager.gamescript = AsmManager.importAsm(path, TextManager.gamescript);
+        System.out.println("com.sfc.sf2.text.TextManager.importDisassembly() - Disassembly imported.");
     }
      
     public static String getLine(int index){
