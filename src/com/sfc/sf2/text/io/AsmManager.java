@@ -28,9 +28,9 @@ public class AsmManager {
     public static final String HUFFMANTREES_FILENAME = "huffmantrees.bin";
     public static final String TEXTBANK_FILENAME = "textbankXX.bin";  
     
-    public static String[] importAsm(String path, String[] gamescript){
+    public static String[] importAsm(String path, String[] inputscript){
         System.out.println("com.sfc.sf2.text.io.AsmManager.importAsm() - Importing ASM ...");
-        String[] script = gamescript;
+        String[] outputscript = inputscript;
         int textCursor=0;
         int baseIndex=0;
         int scanLineNumber = 0;
@@ -51,7 +51,7 @@ public class AsmManager {
                         }else{
                             index = Integer.parseInt(indexString);
                         }
-                        updateLine(textLine, index, script);
+                        outputscript = updateScript(textLine, index, outputscript);
                     }else if(line.trim().startsWith("textCursor")){
                         String indexString = line.trim().substring(line.trim().indexOf(" ")).trim();
                         int index = 0;
@@ -61,24 +61,17 @@ public class AsmManager {
                             index = Integer.parseInt(indexString);
                         }
                         textCursor = index;
-                        System.out.println("textCursor="+textCursor);
+                        System.out.println("textCursor=$"+Integer.toHexString(textCursor));
                     }else if(
                             (
                             line.trim().startsWith("nextSingleText")
                             ||line.trim().startsWith("nextText")
-                            )
-                            &&line.contains(";")&&line.contains("\"")){
-                        String textLine = line.substring(line.indexOf("\"")+1,line.lastIndexOf("\""));
-                        updateLine(textLine, textCursor, script);
-                        textCursor++;
-                    }else if(
-                            (
-                            line.trim().startsWith("nextSingleTextVar")
+                            ||line.trim().startsWith("nextSingleTextVar")
                             ||line.trim().startsWith("nextTextVar")
                             )
                             &&line.contains(";")&&line.contains("\"")){
                         String textLine = line.substring(line.indexOf("\"")+1,line.lastIndexOf("\""));
-                        updateLine(textLine, textCursor, script);
+                        outputscript = updateScript(textLine, textCursor, outputscript);
                         textCursor++;
                     }
                 }catch(Exception e){
@@ -90,12 +83,17 @@ public class AsmManager {
              System.err.println("com.sfc.sf2.text.io.AsmManager.importAsm() - Error while parsing line at index "+scanLineNumber+" : "+e);
              e.printStackTrace();
         }    
+        for(int i=0;i<outputscript.length;i++){
+            if(outputscript[i]==null){
+                outputscript[i]="";
+            }
+        }
         System.out.println("com.sfc.sf2.text.io.AsmManager.importAsm() - ASM imported.");
-        return gamescript;
+        return outputscript;
     }
 
     
-    private static String[] updateLine(String line, int index, String[] script){
+    private static String[] updateScript(String line, int index, String[] script){
         if(index<script.length){
             script[index] = line;
         }else{
