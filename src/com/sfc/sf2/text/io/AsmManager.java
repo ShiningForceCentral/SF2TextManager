@@ -27,12 +27,13 @@ public class AsmManager {
     public static final String HUFFMANTREEOFFSETS_FILENAME = "huffmantreeoffsets.bin";
     public static final String HUFFMANTREES_FILENAME = "huffmantrees.bin";
     public static final String TEXTBANK_FILENAME = "textbankXX.bin";  
+    public static final int INVESTIGATION_LINE_BASE_INDEX = 0x1A7;
     
     public static String[] importAsm(String path, String[] inputscript){
         System.out.println("com.sfc.sf2.text.io.AsmManager.importAsm() - Importing ASM ...");
         String[] outputscript = inputscript;
         int textCursor=0;
-        int baseIndex=0;
+        int baseIndex=-1;
         int scanLineNumber = 0;
         try{
             File file = new File(path);
@@ -73,6 +74,40 @@ public class AsmManager {
                         String textLine = line.substring(line.indexOf("\"")+1,line.lastIndexOf("\""));
                         outputscript = updateScript(textLine, textCursor, outputscript);
                         textCursor++;
+                    }else if(line.trim().startsWith("move.w")&&line.contains(",d3")){
+                        String indexString = line.substring(line.indexOf('#')+1, line.indexOf(',')).trim();
+                        int index = 0;
+                        if(indexString.startsWith("$")){
+                            index = Integer.parseInt(indexString.substring(1), 16);
+                        }else{
+                            index = Integer.parseInt(indexString);
+                        }
+                        baseIndex = index;
+                        System.out.println("baseIndex=$"+Integer.toHexString(baseIndex));
+                    }else if(line.trim().startsWith("msDesc")&&line.contains(";")&&line.contains("\"")&&baseIndex!=-1){
+                        String[] params = line.substring(7,line.indexOf(";")).split(",");
+                        String investigationLineIndexString = params[2].trim();
+                        int investigationLineIndex = 0;
+                        if(investigationLineIndexString.startsWith("$")){
+                            investigationLineIndex = Integer.parseInt(investigationLineIndexString.substring(1), 16);
+                        }else{
+                            investigationLineIndex = Integer.parseInt(investigationLineIndexString);
+                        }
+                        String investigationLine = line.substring(line.indexOf("\"")+1,line.lastIndexOf("\""));
+                        outputscript = updateScript(investigationLine, INVESTIGATION_LINE_BASE_INDEX+investigationLineIndex, outputscript);
+                        String secondLine = scan.nextLine();
+                        scanLineNumber++;
+                        if(secondLine.trim().startsWith(";")&&secondLine.contains("\"")){
+                            String descriptionLineIndexString = params[3].trim();
+                            String descriptionLine = secondLine.substring(secondLine.indexOf("\"")+1,secondLine.lastIndexOf("\""));
+                            int descriptionLineIndex = 0;
+                            if(descriptionLineIndexString.startsWith("$")){
+                                descriptionLineIndex = Integer.parseInt(descriptionLineIndexString.substring(1), 16);
+                            }else{
+                                descriptionLineIndex = Integer.parseInt(descriptionLineIndexString);
+                            }
+                            outputscript = updateScript(descriptionLine, baseIndex+descriptionLineIndex, outputscript);
+                        }
                     }
                 }catch(Exception e){
                     System.err.println("com.sfc.sf2.text.io.AsmManager.importAsm() - Error while parsing line at index "+scanLineNumber+" : "+e);
